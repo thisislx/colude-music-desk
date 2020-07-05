@@ -1,0 +1,31 @@
+@back-color: rgba(0, 0, 0, .5);
+
+.wrap {
+    position        : fixed;
+    left            : 50%;
+    top             : 50%;
+    transform       : translate(-50%, -50%);
+    padding         : .4rem .8rem;
+    max-width       : 14rem;
+    text-align      : center;
+    word-wrap       : break-word;
+    white-space     : pre-wrap;
+    color           : #fff;
+    border-radius   : .6rem;
+    box-shadow      : 0 0 .2rem .1rem hsla(0, 0%, 100%, .7);
+    background-color: @back-color;
+    z-index         : 99;
+    min-width       : 6rem;
+
+    &:global(.hide) {
+        transform: translate(-50%, -50%) scale(.1);
+    }
+
+    >:global(.iconfont) {
+        box-shadow   : 0 0 .2rem .1rem @back-color inset;
+        font-size    : 1.8rem;
+        display      : inline-block;
+        border-radius: 50%;
+        margin       : .2rem 0 .4rem 0;
+    }
+}

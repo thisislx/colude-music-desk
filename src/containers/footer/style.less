@@ -1,0 +1,46 @@
+@height: 3.2rem;
+
+.wrap {
+    position       : absolute;
+    bottom         : 0;
+    left           : 0;
+    right          : 0;
+    height         : @height;
+    display        : flex;
+    align-items    : center;
+    justify-content: space-between;
+    padding-right  : 2rem;
+    font-size      : .9rem;
+    z-index        : 1;
+}
+
+.play-control {
+    display        : flex;
+    max-width      : 12rem;
+    min-width      : 12rem;
+    justify-content: space-evenly;
+
+    >span {
+        width        : @height - 1rem;
+        height       : @height - 1rem;
+        text-align   : center;
+        line-height  : @height - 1rem;
+        font-size    : 1rem;
+        border-radius: 50%;
+    }
+}
+
+.progress {
+    display    : flex;
+    margin-left: 1rem;
+    align-items: center;
+
+    >.container {
+        flex   : 1;
+        padding: 0 1rem;
+    }
+}
+
+.mini-icons {
+    min-width: 2.2rem;
+}

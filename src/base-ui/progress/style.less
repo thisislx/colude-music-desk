@@ -1,0 +1,43 @@
+.wrap {
+    border-radius: .2rem;
+    position     : relative;
+    
+
+    &.show-pointer:hover .pointer {
+        visibility: visible;
+    }
+
+    .percent {
+        position     : relative;
+        height       : inherit;
+        border-bottom: inherit;
+        z-index      : 2;
+    }
+}
+
+.pointer {
+    position     : absolute;
+    border-radius: 50%;
+
+    &.hide {
+        visibility: hidden;
+    }
+
+    .loading {
+        content  : '';
+        position : absolute;
+        left     : 0;
+        top      : 0;
+        right    : 0;
+        bottom   : 0;
+        transform: translate(-40%, -40%);
+    }
+}
+
+
+.buffer {
+    height       : inherit;
+    transition   : .4s linear;
+    border-bottom: inherit;
+    transform    : translateY(-100%);
+}

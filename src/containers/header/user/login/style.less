@@ -1,0 +1,92 @@
+.wrap {
+    height         : 100%;
+    display        : flex;
+    align-items    : center;
+    justify-content: space-between;
+    position       : relative;
+    font-size      : .9rem;
+
+    >img {
+        width        : 1.8rem;
+        height       : 1.8rem;
+        border-radius: 50%;
+    }
+
+    .nickname {
+        margin-left: .6rem;
+    }
+}
+
+@padding: 0 .8rem;
+
+.pad-header {
+    border-width  : 0 0 1px 0;
+    padding       : @padding;
+    padding-bottom: 1rem;
+
+    >header {
+        display: table;
+        width  : 100%;
+
+        >section {
+            display: table-cell;
+            width  : 100%;
+
+            >img {
+                border-radius : 50%;
+                width         : 2.8rem;
+                height        : 2.8rem;
+                vertical-align: middle;
+                margin-right  : .5rem;
+            }
+
+        }
+
+        >button {
+            width        : 4rem;
+            border-width : 1px;
+            border-style : solid;
+            padding      : .3rem .6rem;
+            border-radius: .2rem;
+            box-shadow   : none;
+        }
+    }
+
+    ol {
+        margin-top: 1rem;
+        display   : flex;
+
+        >li {
+            flex        : 1;
+            cursor      : pointer;
+            text-align  : center;
+            border-width: 0 0 0 1px;
+            line-height : 1.4rem;
+
+            &:first-child {
+                border-left: none;
+            }
+        }
+    }
+}
+
+.tag-item {
+    display        : flex;
+    justify-content: space-between;
+    padding        : @padding;
+    height         : 2.6rem;
+    line-height    : 2.6rem;
+    cursor         : pointer;
+
+    &:last-child {
+        border: none;
+    }
+
+    >aside {
+        >span {
+            display   : inline-block;
+            min-width : 1.6rem;
+            text-align: right;
+        }
+    }
+}

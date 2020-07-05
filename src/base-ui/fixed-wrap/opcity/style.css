@@ -1,0 +1,22 @@
+.opcity-entry-fade-enter,
+.opcity-entry-fade-appear {
+    opacity: 0;
+    transition: .3s;
+}
+
+.opcity-entry-fade-enter.opcity-entry-fade-enter-active,
+.opcity-entry-fade-appear.opcity-entry-fade-appear-active {
+    opacity   : 1;
+    transition: opacity 300ms ease-in;
+    transition: .3s;
+}
+
+.opcity-entry-fade-exit {
+    opacity: 1;
+    transition: .3s;
+}
+
+.opcity-entry-fade-exit.opcity-entry-fade-exit-active {
+    opacity: 0;
+    transition: .3s;
+}

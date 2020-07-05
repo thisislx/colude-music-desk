@@ -1,0 +1,17 @@
+@backColor_red: #e74c3c;
+@fontColor_red: #fcfcfc;
+
+.theme-red {
+    background-color: @backColor_red;
+    color           : @fontColor_red;
+    transition      : .2s;
+}
+
+.theme-red-color {
+    color       : @backColor_red;
+    border-color: @backColor_red;
+}
+
+.theme-red-loading {
+    background-image: linear-gradient(@backColor_red 40%, @fontColor_red 60%);
+}

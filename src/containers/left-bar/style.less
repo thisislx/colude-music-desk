@@ -1,0 +1,37 @@
+/* music-data 高度 */
+@musicHeight: 3.6rem;
+/* 子元素最小宽度 */
+@minWidth   : 8rem;
+
+.wrap {
+    font-size  : .86rem;
+    box-shadow : none;
+    position   : fixed;
+    left       : 0;
+    top        : 0;
+    bottom     : 0;
+    z-index    : 4;
+    user-select: none;
+
+    >article {
+        padding : .6rem 0;
+        overflow: hidden;
+        height  : calc(100% - @musicHeight);
+        position: relative;
+
+        >* {
+            min-width: @minWidth;
+        }
+    }
+}
+
+.control-width {
+    position: absolute;
+    top     : 0;
+    right   : -.7rem;
+    bottom  : 0;
+    width   : 1.4rem;
+    cursor  : e-resize;
+    overflow: hidden;
+    z-index : 0;
+}

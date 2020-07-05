@@ -1,0 +1,20 @@
+.swiper-slide-prev::before,
+.swiper-slide-next::before {
+    content         : '';
+    position        : absolute;
+    background-color: rgba(0, 0, 0, .5);
+    top             : 0;
+    left            : 0;
+    right           : 0;
+    bottom          : 0;
+}
+
+.swiper-slide-active {
+    /* height: 120%; */
+}
+
+.swiper-slide {
+    background-repeat  : no-repeat;
+    background-position: center;
+    background-size    : cover;
+}

@@ -1,0 +1,47 @@
+.wrap {
+    overflow: hidden;
+
+    >header {
+        height         : 2.2rem;
+        line-height    : 2.2rem;
+        display        : flex;
+        justify-content: space-between;
+        align-items    : center;
+        font-size      : .95em;
+        padding        : 0 .4rem 0 .6rem;
+    }
+
+    .triangle {
+        border-width: 0 0 1px 1px;
+        width       : .6rem;
+        height      : .6rem;
+        transition  : .5s;
+        transform   : rotate(-135deg);
+
+        &.open {
+            transform: rotate(-45deg);
+        }
+    }
+}
+
+.list {
+    transition: .3s linear;
+
+    &.hide {
+        height: 0 !important;
+    }
+
+    .active {
+        position: absolute;
+        left    : 0;
+        top     : 0;
+        bottom  : 0;
+        width   : .24rem;
+    }
+
+    >li {
+        padding     : .6rem 0;
+        padding-left: 1.2rem;
+        position    : relative;
+    }
+}

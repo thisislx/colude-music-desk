@@ -1,0 +1,30 @@
+.wrap {
+    width   : 100%;
+    position: relative;
+
+    >article {
+        margin-top: .8rem;
+    }
+
+    .tabs {
+        display        : flex;
+        justify-content: space-evenly;
+        border-width   : 0 0 1px 0;
+
+        >li {
+            padding     : .6rem 0;
+            border-style: solid;
+            margin      : 0 1.2rem;
+            border-width: 0 0 .1rem 0;
+            transition  : .2s linear border;
+
+            &.not-active {
+                border-color: transparent;
+            }
+        }
+    }
+}
+
+.hide {
+    display: none;
+}

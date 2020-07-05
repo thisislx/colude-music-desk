@@ -1,0 +1,40 @@
+@borderSize: 1rem;
+
+.wrap {
+    border-radius: 50%;
+    overflow     : hidden;
+    border       : @borderSize solid hsla(0, 0%, 90%, .9);
+    background   : no-repeat content-box rgba(0, 0, 0, .8);
+    position     : relative;
+    background-image:
+        repeating-radial-gradient(hsla(0, 0%, 100%, .1), hsla(0, 0%, 100%, .1) 1px,
+            transparent 0, transparent .4rem);
+    animation: rotate linear infinite 12s;
+
+    &.paused {
+        animation-play-state: paused;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    >img {
+        width           : 70%;
+        height          : 70%;
+        position        : absolute;
+        top             : 50%;
+        right           : 50%;
+        bottom          : 50%;
+        left            : 50%;
+        margin          : -35% 0 0 -35%;
+        border-radius   : 50%;
+        border          : @borderSize solid rgba(0, 0, 0, .9);
+    }
+}

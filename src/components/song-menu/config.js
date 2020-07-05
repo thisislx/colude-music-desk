@@ -1,0 +1,1 @@
+export const imgSize = '?param=200y200'

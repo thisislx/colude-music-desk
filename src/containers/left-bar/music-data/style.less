@@ -1,0 +1,62 @@
+@import '../style.less';
+
+.music-wrap {
+    height      : @musicHeight;
+    display     : flex;
+    align-items : center;
+    border-width: 1px 0 0 0;
+    padding     : 0 .3rem;
+    overflow    : hidden;
+
+    >.img-wrap {
+        width   : calc(@musicHeight - .7rem);
+        position: relative;
+
+        >img {
+            width : 100%;
+            height: 100%;
+        }
+    }
+
+    >article {
+        flex           : 1;
+        height         : 100%;
+        display        : flex;
+        flex-direction : column;
+        font-size      : .97em;
+        justify-content: space-evenly;
+        margin-left    : .5rem;
+        overflow       : hidden;
+    }
+
+    >.icons {
+        padding  : 0 .3rem;
+        font-size: .9rem;
+
+        >span {
+            font-size    : inherit;
+            border-radius: .4rem;
+        }
+    }
+}
+
+.img-mask {
+    position       : absolute;
+    left           : 0;
+    right          : 0;
+    top            : 0;
+    bottom         : 0;
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+
+    &:hover>span {
+        visibility: visible;
+    }
+
+    >span {
+        visibility : hidden;
+        font-size  : 1rem;
+        font-weight: 600;
+    }
+}

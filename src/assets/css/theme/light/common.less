@@ -1,0 +1,140 @@
+/* v: 更暗(正数)  r: 更亮(负数) */
+.total-light(@limit) when(@limit > 99) {
+    @100 : red;
+    @200 : gold;
+    @300 : pink;
+    @400 : green;
+    @500 : skyBlue;
+
+    .light-backHover(2, @@limit);
+    .light-border(2, @@limit);
+    .light-textHover(2, @@limit);
+    .light-boxShadow(2, @@limit);
+
+    .light-back(4, @@limit);
+    .light-fontColor(4, @@limit);
+
+    .total-light(@limit - 100);
+}
+
+.total-light(500);
+
+.light-backHover(@count, @color) when(@count > 0) {
+    @1      : linear-gradient(rgba(0, 0, 0, .04), rgba(0, 0, 0, .04));
+    @2      : linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1));
+    @-count : @count * -1;
+    @-1     : linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1));
+    @-2     : linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1));
+
+    .theme-@{color}-backHover-v@{count} {
+        &:hover {
+            background-image: @@count;
+        }
+    }
+
+    .theme-@{color}-backHover-r@{count} {
+        &:hover {
+            background-image: @@-count;
+        }
+    }
+
+    .light-backHover(@count - 1, @color);
+}
+
+.light-border(@count, @color) when(@count > 0) {
+    @1      : 1px solid rgba(0, 0, 0, .1);
+    @2      : 1px solid rgba(0, 0, 0, .8);
+    @-count : @count * -1;
+    @-1     : 1px solid hsla(0, 0%, 100%, .1);
+    @-2     : 1px solid hsla(0, 0%, 100%, .8);
+
+    .theme-@{color}-border-v@{count} {
+        border: @@count;
+    }
+
+    .theme-@{color}-border-r@{count} {
+        border: @@-count;
+    }
+
+    .light-border(@count - 1, @color)
+}
+
+.light-boxShadow(@count, @color) when(@count > 0) {
+    @1      : 0 0 .5rem rgba(0, 0, 0, .2);
+    @2      : 0 0 .5rem rgba(0, 0, 0, .4);
+    @-count : @count * -1;
+    @-1     : 0 0 .5rem hsla(0, 0%, 100%, .2);
+    @-2     : 0 0 .5rem hsla(0, 0%, 100%, .4);
+
+    .theme-@{color}-boxShadow-v@{count} {
+        box-shadow: @@count;
+    }
+
+    .theme-@{color}-boxShadow-r@{count} {
+        box-shadow: @@-count;
+    }
+
+    .light-boxShadow(@count - 1, @color);
+}
+
+.light-textHover(@count, @color) when(@count > 0) {
+    @1      : #444;
+    @2      : #000;
+    @-count : @count * -1;
+    @-1     : #aaa;
+    @-2     : #fff;
+
+    .theme-@{color}-textHover-v@{count}:hover {
+        color: @@count;
+    }
+
+    .theme-@{color}-textHover-r@{count}:hover {
+        color: @@-count;
+    }
+
+    .light-textHover(@count - 1, @color);
+}
+
+.light-back(@count, @color) when(@count > 0) {
+    @1      : rgba(140, 140, 140, .1);
+    @2      : rgba(120, 120, 120, .3);
+    @3      : rgba(40, 40, 40, .98);
+    @4      : rgba(20, 20, 20, .98);
+    @-count : @count * -1;
+    @-1     : hsla(0, 0%, 100%, .1);
+    @-2     : hsla(0, 0%, 96%, .98);
+    @-3     : hsla(0, 0%, 98%, .98);
+    @-4     : hsla(0, 0%, 100%, .98);
+
+    .theme-@{color}-back-v@{count} {
+        background-color: @@count;
+    }
+
+    .theme-@{color}-back-r@{count} {
+        background-color: @@-count;
+    }
+
+    .light-back(@count - 1, @color);
+}
+
+.light-fontColor(@count, @color) when(@count > 0) {
+    @1      : #666;
+    @2      : #444;
+    @3      : #222;
+    @4      : #000;
+    @-count : @count * -1;
+    @-1     : #888;
+    @-2     : #aaa;
+    @-3     : #ccc;
+    @-4     : #fff;
+
+    .theme-@{color}-fontColor-v@{count} {
+        color: @@count;
+    }
+
+    .theme-@{color}-fontColor-r@{count} {
+        color: @@-count;
+    }
+
+    .light-fontColor(@count - 1, @color);
+}

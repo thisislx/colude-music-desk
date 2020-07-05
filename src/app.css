@@ -1,0 +1,59 @@
+@import './assets/fonts/iconfont.css';
+
+.hide {
+    visibility      : hidden;
+    position        : absolute;
+    opacity         : 0;
+    transition      : .3s ease-out;
+    transform-origin: center;
+}
+
+.pointer {
+    cursor     : pointer;
+    user-select: none;
+}
+
+.not-allowed {
+    cursor     : not-allowed;
+    user-select: none;
+}
+
+.dis-none {
+    display: none;
+}
+
+.extend-click {
+    position: relative;
+}
+
+.extend-click::after {
+    top     : -.3rem;
+    right   : -.3rem;
+    bottom  : -.3rem;
+    left    : -.3rem;
+    position: absolute;
+    content : '';
+}
+
+.click-active:active {
+    box-shadow: inset 0 0 .1rem rgba(0, 0, 0, .2);
+}
+
+.no-wrap {
+    overflow     : hidden;
+    white-space  : nowrap;
+    word-break   : break-all;
+    text-overflow: ellipsis;
+}
+
+.select {
+    user-select: all;
+}
+
+.not-select {
+    user-select: none;
+}
+
+.weight-v1 {
+    font-weight: 600;
+}

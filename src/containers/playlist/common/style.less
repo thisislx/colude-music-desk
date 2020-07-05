@@ -1,0 +1,116 @@
+.wrap {
+    position: relative;
+}
+
+.header {
+    display        : flex;
+    justify-content: space-between;
+    margin         : 2rem 0;
+
+    >img {
+        height: 12rem;
+    }
+
+}
+
+.header-r {
+    position   : relative;
+    flex       : 1;
+    margin-left: 2rem;
+
+    .count {
+        position   : absolute;
+        right      : 0;
+        top        : 0;
+        white-space: pre-wrap;
+        display    : flex;
+        font-size  : .75rem;
+
+        >section {
+            text-align     : center;
+            border-width   : 0 0 0 1px;
+            width          : 3rem;
+            height         : 2rem;
+            padding-left   : .5rem;
+            display        : flex;
+            flex-direction : column;
+            justify-content: space-between;
+            margin-left    : .5rem;
+
+            &:first-child {
+                border      : none;
+                padding-left: 0;
+            }
+        }
+    }
+
+    >.btns {
+        display   : flex;
+        margin-top: 1rem;
+
+        >button {
+            margin-left: 1rem;
+
+            &:first-child {
+                margin: 0;
+            }
+        }
+    }
+
+    .tags {
+        >li {
+            display: inline-block;
+        }
+
+        margin-top: 1rem;
+    }
+
+    .desc {
+        padding-top  : 1rem;
+        width        : inherit;
+        text-overflow: ellipsis;
+        line-height  : 1.2rem;
+        height       : 2.4rem;
+        overflow     : hidden;
+
+        &.show-more {
+            height  : 100%;
+            overflow: visible;
+        }
+
+        >.triangle {
+            float : right;
+            margin: 0 1rem;
+        }
+
+        .desc-text {
+            white-space: pre-wrap;
+        }
+    }
+}
+
+.creator {
+    display    : flex;
+    align-items: center;
+    font-size  : .9rem;
+    margin-top : 1rem;
+
+    >section {
+        height     : 2rem;
+        display    : flex;
+        align-items: center;
+
+        >img {
+            height       : inherit;
+            border-radius: 50%;
+            margin-right : .5rem;
+        }
+    }
+
+
+    .create-time {
+        font-size  : .7rem;
+        margin-left: .5rem;
+        margin-top : .2rem;
+    }
+}

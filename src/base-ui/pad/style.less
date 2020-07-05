@@ -1,0 +1,42 @@
+.wrap {
+    position     : fixed;
+    border-radius: .2rem;
+    z-index      : 4;
+
+    &.center {
+        position : fixed;
+        top      : 50%;
+        left     : 50%;
+        transform: translate(-50%, -50%);
+
+        .triangle {
+            display: none;
+        }
+    }
+}
+
+.triangle {
+    position        : absolute;
+    background-color: inherit;
+    box-shadow      : inherit;
+
+    &.top {
+        clip-path: polygon(50% 0, 100% 50%, 0% 50%);
+    }
+
+    &.bottom {
+        clip-path: polygon(0 50%, 100% 50%, 50% 100%);
+    }
+
+    &.left {
+        clip-path: polygon(100% 0, 100% 100%, 50% 50%);
+    }
+
+    &.right {
+        clip-path: polygon(0 0, 0 100%, 50% 50%);
+    }
+
+    &.center {
+        display: none;
+    }
+}

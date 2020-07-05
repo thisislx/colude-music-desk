@@ -1,0 +1,17 @@
+@backColor_green: #1dd1a1;
+@fontColor_green: #fcfcfc;
+
+.theme-green {
+    background-color: @backColor_green;
+    color           : @fontColor_green;
+    transition      : .2s;
+}
+
+.theme-green-color {
+    color       : @backColor_green;
+    border-color: @backColor_green;
+}
+
+.theme-green-loading {
+    background-image: linear-gradient(@backColor_green 40%, @fontColor_green 60%);
+}

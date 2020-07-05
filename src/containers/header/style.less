@@ -1,0 +1,30 @@
+.wrap {
+    position       : relative;
+    display        : flex;
+    align-items    : center;
+    justify-content: space-between;
+    padding        : .4rem 1rem;
+    z-index        : 5;  /* 高于侧栏 */
+    width          : 100%;
+}
+
+.left,
+.right {
+    display    : flex;
+    align-items: center;
+}
+
+.left {
+    display    : flex;
+    align-items: center;
+
+    .logo {
+        min-width: 4rem;
+        width    : 8rem;
+        font-size: 2rem;
+    }
+}
+
+.right {
+    padding-right: 4rem;
+}

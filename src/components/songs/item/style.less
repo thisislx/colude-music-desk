@@ -1,0 +1,39 @@
+.wrap {
+    display        : flex;
+    padding        : .4rem .2rem;
+    justify-content: space-between;
+}
+
+.left {
+    display    : flex;
+    align-items: center;
+    min-width  : 40%;
+
+    >span {
+        min-width: 2rem;
+    }
+
+    .mv {
+        margin-left: .6rem;
+    }
+}
+
+.right {
+    min-width      : 60%;
+    display        : flex;
+    justify-content: space-around;
+
+    >span {
+        text-overflow: ellipsis;
+        white-space  : nowrap;
+        overflow     : hidden;
+        min-width    : 40%;
+        width        : 40%;
+        padding      : 0 .4rem;
+
+        &:last-child {
+            width    : 20%;
+            min-width: 20%;
+        }
+    }
+}

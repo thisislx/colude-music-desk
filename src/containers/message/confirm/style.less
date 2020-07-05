@@ -1,0 +1,45 @@
+@back-color: rgba(0, 0, 0, .4);
+
+.wrap {
+    position        : fixed;
+    top             : 50%;
+    left            : 50%;
+    transform       : translate(-50%, -50%);
+    background-color: @back-color;
+    padding         : .2rem .4rem;
+    border-radius   : .3rem;
+    width           : 10rem;
+
+    &:global(.hide) {
+        transform: translate(-50%, -50%) scale(.1);
+    }
+
+    >p {
+        text-align : center;
+        color      : #fff;
+        margin     : .6rem 0;
+        min-height : 2rem;
+        word-wrap  : break-word;
+        white-space: pre-wrap;
+        line-height: 1.5;
+    }
+
+    >footer {
+        display        : flex;
+        justify-content: space-around;
+
+        >button {
+            padding      : .4rem .8rem;
+            border       : none;
+            border-radius: .2rem;
+
+            &.ok {
+                background-color: greenyellow;
+            }
+
+            &.cancel {
+                background-color: hotpink;
+            }
+        }
+    }
+}
