@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from "react"
 
-// 判断点击是否在依赖内
+// 判断点击是否在依赖内 @params(deps --- @type(ref))
 function useClick(fn, deps) {
     const
         handle = useCallback((e) => {
@@ -12,7 +12,7 @@ function useClick(fn, deps) {
             }
             // 不在deps内
             fn(false)
-        }, [fn, deps]),
+        }, [deps]),
         open = useCallback(() => {
             window.addEventListener('click', handle, false)
         }, [handle]),

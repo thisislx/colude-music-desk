@@ -69,7 +69,6 @@ function Player(props) {
         if (!Reflect.has(comments, commentsPageCount))
             getComments(currentSongId, commentsPageCount)
     }, [getComments, commentsPageCount, comments, currentSongId])
-    
     if (!Reflect.has(currentSong, 'id')) return <> </>
     return (
         <UI

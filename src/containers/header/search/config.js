@@ -34,4 +34,4 @@ export const
     createSourece_ = (name = '搜索栏') => ({
         name
     }),
-    createResultPath_ = (words, type) => `${_paths.search}${words}?type=${type}`
+    createResultPath_ = words => `${_paths.search}${words}`

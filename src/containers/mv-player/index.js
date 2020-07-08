@@ -5,7 +5,7 @@ import _paths from 'config/paths'
 import { actionsCreator as mvAc } from 'store/mv'
 import { connect } from 'react-redux'
 import useTheme from 'hooks/useTheme'
-import { createBarrage } from 'tools/media'
+import { createBarrage_ } from 'tools/media'
 
 import UI from './UI'
 const _history = history
@@ -27,10 +27,13 @@ function MvPlayer(props) {
             setId(id)
             _history.pushState(null, '', _paths.mvPlayer + id)
         }, [history])
+
     /* mv变化@网络请求 */
     useEffect(() => {
-        getMvData(id)
-        getRelateMv(id)
+        if (id) {
+            getMvData(id)
+            getRelateMv(id)
+        }
     }, [id, getMvData, getRelateMv])
 
     /* 评论页数改变 */
@@ -40,7 +43,7 @@ function MvPlayer(props) {
     }, [id, commentsOffset, getComment, comments])
 
     useEffect(() => {
-        changeBarrage(createBarrage(
+        changeBarrage(createBarrage_(
             [...briefHotComments, ...currentComments.reverse()]
             , mvData.duration / 1000)
         )

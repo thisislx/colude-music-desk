@@ -6,9 +6,6 @@ import store from './store'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
 import routes from './routes'
-
-import Header from './containers/header'
-import Footer from './containers/footer'
 import LoadingIcon from './base-ui/loading-icon'
 
 import { hot } from 'react-hot-loader/root'
@@ -20,13 +17,10 @@ function App() {
     return (
         <Provider store={store}>
             <Router>
-                <Header />
                 <Suspense fallback={<LoadingIcon center={true} />}>
                     {renderRoutes(routes)}
-                </Suspense>
-                <Footer />
-                {/* 功能组件 */}
-                <Suspense fallback={<LoadingIcon center={true} />}>
+
+                    {/* 功能组件 */}
                     <Message />
                     <Music />
                 </Suspense>

@@ -20,19 +20,14 @@ function Footer(props) {
         {
             togglePlaying, changePercent, changeVolume,
             changePlayMode, nextSong, previousSong,
-            changeSongPlaylistShow,
+            changeRightBarShow,
         } = props,
-        { playMode_imm, currentSong_imm, songPlaylist_imm } = props,
+        { playMode_imm, currentSong_imm, rightBar_imm } = props,
         currentSong = useMemo(() => currentSong_imm.toJS(), [currentSong_imm]),
         playMode = useMemo(() => playMode_imm.toJS(), [playMode_imm]),
-        { ref: songPlaylistRef, show: songPlaylistShow }
-            = useMemo(() => songPlaylist_imm.toJS(), [songPlaylist_imm]),
         isInit = useRef(true),
         theme = useTheme(themeName),
         showToast = useToast(1200),
-        [listener, closeListener] = useClick((bool) => {
-            changeSongPlaylistShow(bool)
-        }, [songPlaylistRef]),
         endTime = useMemo(() => computeClockMin(currentSong.dt), [currentSong]),
         currentTime = useMemo(() => computeClockMin(currentSong.dt * playPercent), [currentSong, playPercent]),
         silenceHandle = useCallback((e) => {
@@ -55,13 +50,6 @@ function Footer(props) {
     useEffect(() => {
         if (!isInit.current) showToast(playMode.name)
     }, [playMode, showToast, isInit])
-
-    // 打开playlist
-    useEffect(() => {
-        if (songPlaylistShow) listener()
-        else closeListener()
-        return () => closeListener()
-    }, [listener, closeListener, songPlaylistShow])
 
     useEffect(() => {
         isInit.current = false
@@ -125,7 +113,7 @@ function Footer(props) {
             ></span>
 
             <span
-                onClick={e => changeSongPlaylistShow(true)}
+                onClick={e => changeRightBarShow(true)}
                 className={`${_mediaIcons.playlist.className} ${styles.miniIcons}`}
                 dangerouslySetInnerHTML={{ __html: _mediaIcons.playlist.icon }}
             ></span>
@@ -158,8 +146,6 @@ const
             playMode_imm,
             songList_imm,
             currentSong_imm,
-            songPlaylist_imm: state.getIn(['layout', 'songPlaylist']),
-
         }
     },
     mapDispatch = dispatch => ({
@@ -184,8 +170,8 @@ const
         changeIndex(index) {
             dispatch(musicAc.changeIndex(index))
         },
-        changeSongPlaylistShow(bool) {
-            dispatch(layoutAc.changeSongPlaylistShow(bool))
+        changeRightBarShow(bool) {
+            dispatch(layoutAc.changeRightBarShow(bool))
         }
     })
 

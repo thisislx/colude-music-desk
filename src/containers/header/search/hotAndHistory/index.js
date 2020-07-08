@@ -5,7 +5,7 @@ import { _hotLightConfig } from '../config'
 
 function HotAndHistory(props) {
     const
-        { searchHot = [], onSubmit, theme } = props,
+        { searchHot = [], searchHistory, onSubmit, theme } = props,
         proxyClick = useCallback(e => {
             const
                 el = e.target,
@@ -19,8 +19,18 @@ function HotAndHistory(props) {
         >
             <section>
                 <h2>搜索历史</h2>
-                <ol onClick={proxyClick}>
-
+                <ol onClick={proxyClick} className={styles.history}>
+                    {
+                        searchHistory.map((item, key) => (
+                            <li
+                                data-word={item}
+                                key={key}
+                                className={`pointer ${theme.textHover_v1}`}
+                            >
+                                {item}
+                            </li>
+                        ))
+                    }
                 </ol>
             </section>
             <section >
@@ -66,6 +76,7 @@ function HotAndHistory(props) {
 HotAndHistory.propTypes = {
     history: PropTypes.array,
     searchHot: PropTypes.array,
+    searchHistory: PropTypes.array,
     onSubmit: PropTypes.func,
     theme: PropTypes.object,
 }

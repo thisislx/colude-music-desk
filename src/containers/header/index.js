@@ -23,8 +23,8 @@ function Header(props) {
         }, [history])
 
     return (
-        <div
-            className={`${theme} ${theme}-font-v1 ${styles.wrap}`}
+        <header
+            className={`${theme}  ${styles.wrap}`}
             style={{ height: _layout.headerHeight }}
         >
             <section className={styles.left}>
@@ -40,7 +40,7 @@ function Header(props) {
                 <Skip changeTheme={changeTheme} />
                 <User theme={theme} />
             </section>
-        </div>
+        </header>
     )
 }
 

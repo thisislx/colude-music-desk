@@ -4,9 +4,6 @@ import { fromJS } from 'immutable'
 export const initState = {
     isLogin: false,
     userId: -1,
-    toast: {
-        text: ''
-    },
     detail: {      /* 我的信息 */
         profile: { /*更多详细信息*/ }
     },
@@ -21,20 +18,25 @@ export default (state = initState_imm, { type, value }) => {
         case types.GET_IS_LOGIN:
             return state.set('isLogin', value)
 
-        case types.GET_DETAIL:
+        case types.CHANGE_MY_DETAIL:
             return state.set('detail', value)
 
-        case types.CHANGE_USER_ID:
-            return state.set('userId', value)
+        case types.CHANGE_LOGIN_STATE:
+            return state
+                .set('userId', value)
+                .set('isLogin', true)
 
         case types.CHANGA_TOAST:
             return state.set('toast', value)
 
         case types.CHANGE_SIGN_IN_STATE:
-            return state.mergeIn(['detail'], fromJS({ mobileSign: true, pcSign: true }))
+            return state.merge('detail', fromJS({ mobileSign: true, pcSign: true }))
 
         case types.CHANGET_OTHER_USER:
             return state.set('otherUser', value)
+
+        case types.INIT:
+            return initState_imm
 
         default: return state
     }

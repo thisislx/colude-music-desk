@@ -40,7 +40,7 @@ function Pagination(props) {
             setCurrent(index)
             onChange && Number.isInteger(index) && onChange(index)
         }, [onChange])
-
+    if (pageCount < 2) return <> </>
     return (
         <ol
             className={styles.wrap}

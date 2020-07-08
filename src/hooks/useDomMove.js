@@ -19,7 +19,7 @@ export default (cb, [moveRef, triggerRef], onEnd, origin = 'left') => {
         }, [moveRefAlign, cb]),
         posTable = useMemo(() => {
             return {
-                left: () => moveRef.current.getBoundingClientRect().x,
+                left: () => moveRef.current && moveRef.current.getBoundingClientRect().x,
                 right: () => window.innerWidth,
                 top: () => 1,
                 bottom: () => 1,

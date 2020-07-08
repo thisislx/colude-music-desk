@@ -1,6 +1,7 @@
-import React, { memo, useState, useEffect } from 'react'
+import React, { memo, useState, useEffect, Suspense } from 'react'
 import PropTypes from 'prop-types'
 import styles from './style'
+import Loading from 'base-ui/loading-icon'
 
 function TabItem(props) {
     const
@@ -12,9 +13,11 @@ function TabItem(props) {
 
     if (init) return (
         <div className={show ? '' : styles.hide}>
-            {
-                children
-            }
+            <Suspense fallback={<Loading center={true} />}>
+                {
+                    children
+                }
+            </Suspense>
         </div>
     )
     return <> </>

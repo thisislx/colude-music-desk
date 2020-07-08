@@ -10,8 +10,6 @@ const
     Singer = lazy(() => import(/* webpackChunkName: 'home-singer' */'./singer'))
 
 export const
-    _leftBarMaxWidth = 400,
-    _playlistMaxWidth = 600,
     _navConfig = [
         {
             name: '个性推荐',

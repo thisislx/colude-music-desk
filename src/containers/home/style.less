@@ -1,21 +1,25 @@
 .wrap {
-    user-select: none;
-    height     : 100vh;
-    position   : relative;
-    overflow-y : auto;
+    display       : flex;
+    flex-direction: column;
+    height        : 100vh;
+    overflow      : hidden;
 
-    >article {
-        max-width: 90rem;
-        margin   : 0 auto;
-        padding  : 1rem 4rem;
-    }
+    >main {
+        flex       : 1;
+        user-select: none;
+        padding    : 1rem;
+        position   : relative;
+        overflow-y : auto;
+        overflow-x : hidden;
+        max-width  : 80%;
 
-    .hide {
-        visibility: hidden;
-        position: absolute;
+        &.transition {
+            left      : 0;
+            transition: .7s linear;
+        }
     }
 }
 
-.over-hide {
-    overflow: hidden !important;
+.hide {
+    display: none;
 }

@@ -19,9 +19,10 @@ function Search(props) {
     const
         { themeName } = props,
         { getSearchHot, getSearchSuggest, addSongs } = props,
-        { searchHot_imm, searchSuggest_imm } = props,
+        { searchHot_imm, searchSuggest_imm, searchHistory_imm } = props,
         searchHot = useMemo(() => searchHot_imm.toJS(), [searchHot_imm]),
         searchSuggest = useMemo(() => searchSuggest_imm.toJS(), [searchSuggest_imm]),
+        searchHistory = useMemo(() => searchHistory_imm.toJS(), [searchHistory_imm]),
         [showPad, setShowPad] = useState(false),
         [inputValue, setInputValue] = useState(''),
         wrapRef = useRef(null),
@@ -50,9 +51,7 @@ function Search(props) {
         }, [addSongs]),
         /* 进入 */
         enterSearchPage = useCallback(words => {
-            history.push({
-                pathname: createResultPath_(words, _typeConfig[_typeKeys[0]].type)
-            })
+            history.push(createResultPath_(words), _typeConfig[_typeKeys[0]].type)
             setShowPad(false)
         }, [history])
 
@@ -80,7 +79,7 @@ function Search(props) {
         <form
             className={styles.wrap}
             ref={wrapRef}
-            onSubmit={e => { console.log(e); e.preventDefault(); enterSearchPage(inputValue) }}
+            onSubmit={e => { e.preventDefault(); enterSearchPage(inputValue) }}
         >
             <input
                 type='text'
@@ -89,7 +88,7 @@ function Search(props) {
                 onFocus={e => setShowPad(true)}
             />
             <span className={`iconfont`}>&#xe632;</span>
-            <Pad show={showPad} width={20} top={6} left={20}>
+            <Pad show={showPad} width={20} top={6} left={18}>
                 <div className={styles.pad}>
                     {
                         inputValue ?
@@ -109,6 +108,7 @@ function Search(props) {
                             :
                             <HotAndHistory
                                 searchHot={searchHot}
+                                searchHistory={searchHistory}
                                 theme={theme}
                                 onSubmit={enterSearchPage}
                             />
@@ -125,13 +125,15 @@ const
             themeName = state.getIn(['theme', 'name']),
             search = state.get('search'),
             searchHot_imm = search.get('searchHot'),
-            searchSuggest_imm = search.get('searchSuggest')
+            searchSuggest_imm = search.get('searchSuggest'),
+            searchHistory_imm = search.get('history')
 
         return {
             themeName,
 
             searchHot_imm,
             searchSuggest_imm,
+            searchHistory_imm,
         }
     },
     mapDispath = dispatch => ({

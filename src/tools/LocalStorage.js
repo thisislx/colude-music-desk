@@ -5,13 +5,13 @@ export default class LocalStorage {
     }
 
     get(key = '') {
-        return JSON.parse(localStorage.getItem(this.key + key))
+        return JSON.parse(localStorage.getItem(`${this.key}/${key}`))
     }
 
     set(value, key = '') {
         if (this.kid) clearTimeout(this.kid)
         this.kid = setTimeout(() => {
-            localStorage.setItem(this.key + key, JSON.stringify(value))
+            localStorage.setItem(`${this.key}/${key}`, JSON.stringify(value))
         }, 5000)
     }
 }

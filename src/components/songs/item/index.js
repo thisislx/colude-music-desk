@@ -7,7 +7,6 @@ import _icons, { _mediaIcons } from 'config/icons'
 function SongsItem(props) {
     const
         { data, theme, index, active } = props
-
     return (
         <li
             data-index={index}
@@ -21,17 +20,16 @@ function SongsItem(props) {
                             className={` ${theme.color} ${_mediaIcons.volume.className}`}
                             dangerouslySetInnerHTML={{ __html: _mediaIcons.volume.icon }}
                         ></span> :
-                        <span className={`${theme.fontColor_r1}`} data-index={index}>
+                        <span  data-index={index}>
                             {index + 1}
                         </span>
                 }
                 {/* 喜欢图标 */}
                 <span
-                    className={`${theme.fontColor_r1} ${styles.like} ${_icons.like.className}`}
+                    className={` ${styles.like} ${_icons.like.className}`}
                     dangerouslySetInnerHTML={{ __html: _icons.like.icon }}
                 ></span>
-                {name}
-                <span className={`${theme.fontColor_v3} no-wrap pointer`} data-index={index}>
+                <span className={`${theme.fontColor_v2} no-wrap pointer`} data-index={index}>
                     {data.name}
                 </span>
 
@@ -58,7 +56,7 @@ function SongsItem(props) {
                     </span>
                 </span>
                 {/* 时长 */}
-                <span className={`${theme.fontColor_r1}`} data-index={index}>
+                <span  data-index={index}>
                     {computeClockMin(data.duration)}
                 </span>
             </section>

@@ -8,7 +8,12 @@ export default (() => {
             like: { icon: '&#xe609;' },
             collect: { icon: '&#xe609;' },
             full: { icon: '&#xe62e;', },
-            theme: { icon: '&#xe666;' }
+            theme: { icon: '&#xe666;' },
+            gender: {
+                icon(num) {
+                    return ['', '&#xe67f;', '&#xe680;'][num]
+                }
+            },
         }
     for (const item of Object.values(obj))
         item.className = item.className ? className + item.className : className

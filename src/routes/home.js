@@ -15,9 +15,10 @@ export default [
         component: Playlist,
     }, {
         path: _paths.player,
-        component: Player
+        component: Player,
     }, {
         path: `${_paths.mvPlayer}:id`,
+        exact: false,
         component: MvPlayer,
     }, {
         path: `${_paths.search}:words`,

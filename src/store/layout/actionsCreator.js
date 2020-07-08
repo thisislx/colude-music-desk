@@ -14,15 +14,15 @@ export default {
             value: fromJS(ref)
         }
     },
-    changeSongPlaylistShow(bool) {
+    changeRightBarShow(bool) {
         return {
-            type: types.CHANGE_SONG_PLAYLIST_SHOW,
+            type: types.CHANGE_RIGHT_BAR_SHOW,
             value: bool,
         }
     },
-    changeSongPlaylistRef(ref) {
+    changeRightBarRef(ref) {
         return {
-            type: types.CHANGE_SONG_PLAYLIST_REF,
+            type: types.CHANGE_RIGHT_BAR_REF,
             value: fromJS(ref)
         }
     }

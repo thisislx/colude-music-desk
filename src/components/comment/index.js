@@ -23,7 +23,7 @@ function Comment(props) {
 
     if (!list.length) return <></>
     return (
-        <div className={styles.wrap}>
+        <div className={`${styles.wrap} ${theme.fontColor_v1} `}>
             <header className={`${theme.border_v1}`}>{title}</header>
             <ol
                 onClick={proxyHandle}

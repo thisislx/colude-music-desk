@@ -56,7 +56,7 @@ export const
         }
         return songs
     },
-    createBarrage = (list, duration) => {
+    createBarrage_ = (list, duration) => {
         const
             len = list.length,
             gap = duration / len,

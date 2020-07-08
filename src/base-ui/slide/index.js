@@ -38,7 +38,7 @@ function Slide(props) {
         return () => {
             window.removeEventListener('resize', swiperHandle)
         }
-    }, [])
+    }, [swiperHandle])
     return (
         <div className={`swiper-container`} style={style} >
             <div className="swiper-wrapper">

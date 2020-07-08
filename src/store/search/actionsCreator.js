@@ -16,25 +16,24 @@ const
             }
         },
 
-        getSearch(words, type, offset, limit = 50) {
+        getSearch(type, offset, limit = 50) {
             return {
                 type: types.SAGA_GET_SEARCH,
-                value: [words, type, offset, limit]
+                value: [type, offset, limit]
             }
         },
     },
     creator = {
-        cleanResult() {
+        changeWords(words) {
             return {
-                type: types.CLEAN_RESULT
+                type: types.CHANGE_WORDS,
+                value: words
             }
         }
     }
 
 
 export const assist = {
-    cleanResult: creator.cleanResult,
-
     getSearchHot(arr) {
         return {
             type: types.GET_SEARCH_HOT,
@@ -51,6 +50,12 @@ export const assist = {
         return {
             type: types.UPDATE_RESULT,
             value: [type, offset, fromJS(list)]
+        }
+    },
+    addHistory(words) {
+        return {
+            type: types.ADD_HISTROY,
+            value: words
         }
     }
 }

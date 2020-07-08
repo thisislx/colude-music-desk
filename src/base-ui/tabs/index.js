@@ -6,9 +6,9 @@ import { connect } from 'react-redux'
 
 function Tabs(props) {
     const
-        { children, defaultActive = 0, onChange, themeName, height = 2, el } = props,
+        { children, defalutValue = 0, onChange, themeName, height = 2, el } = props,
         [tabs, setTabs] = useState(Array.prototype),
-        [active, setActive] = useState(defaultActive),
+        [active, setActive] = useState(~defalutValue ? defalutValue : 0),
         tabsRef = useRef(null),
         theme = useTheme(themeName),
         toggleActive = useCallback((e) => {
@@ -66,10 +66,9 @@ function Tabs(props) {
 
 Tabs.propTypes = {
     height: PropTypes.number,
-    defaultActive: PropTypes.number,
+    defalutValue: PropTypes.number,
     onChange: PropTypes.func,
     el: PropTypes.object,
-
     children: PropTypes.node,
     themeName: PropTypes.string,
 }

@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { memo, useMemo, useEffect, useState, useCallback, useRef } from 'react'
 import styles from './style'
-import { _songMenuConfig, _likeMenuIndex } from './config'
+import { _songMenuConfig, _likeMenuIndex, _wrapMaxWidth } from './config'
 import { connect } from 'react-redux'
 import { actionsCreator as songMenuAc } from 'store/song-menu'
 import { actionsCreator as layoutAc } from 'store/layout'
 import useTheme from 'hooks/useTheme'
+import useDomMove from 'hooks/useDomMove'
 import { withRouter, useHistory } from 'react-router-dom'
 import _paths from 'config/paths'
 import Collapse from 'base-ui/collapse'
@@ -13,7 +14,7 @@ import MusicData from './music-data'
 
 function LeftBar(props) {
     const
-        { el } = props, /* 手动传参，el为ref */
+        { onWidthChange } = props,
         { userId, currentMenuId, themeName, headerHeight, footerHeight, leftBarWidth } = props,
         { getMySongMenu, cleanMySongMenu, changeLeftBarRef } = props,
         { mySongMenu_imm, currentSong_imm } = props,
@@ -42,7 +43,15 @@ function LeftBar(props) {
                 }
             }
             return [-1, -1]
-        }, [mySongMenu])
+        }, [mySongMenu]),
+        wrapMoveHandle = useCallback(width => {
+            if (width <= _wrapMaxWidth) {
+                wrapRef.current.style.width = width + 'px'
+                onWidthChange && onWidthChange(width)
+            }
+        }, [wrapRef, onWidthChange])
+
+    useDomMove(wrapMoveHandle, [wrapRef, controlWidthRef])
 
     useEffect(() => {
         if (~userId) getMySongMenu(userId)
@@ -53,18 +62,6 @@ function LeftBar(props) {
         setActive(getActive(currentMenuId))
     }, [currentMenuId, getActive])
 
-    /* 更新距离顶部与底部距离 */
-    useEffect(() => {
-        wrapRef.current.style.cssText =
-            `top: ${headerHeight};bottom: ${footerHeight};`
-    }, [headerHeight, footerHeight])
-
-    useEffect(() => {
-        if (el) {
-            el.current.wrap.current = wrapRef.current
-            el.current.control.current = controlWidthRef.current
-        }
-    }, [el, wrapRef, controlWidthRef])
 
     /* 仅一次更新width */
     useEffect(() => {
@@ -72,9 +69,15 @@ function LeftBar(props) {
         changeLeftBarRef(wrapRef)
     }, [changeLeftBarRef, wrapRef])
 
+    /* 更新距离顶部与底部距离 */
+    useEffect(() => {
+        wrapRef.current.style.cssText =
+            `top: ${headerHeight};bottom: ${footerHeight};`
+    }, [headerHeight, footerHeight])
+
     return (
         <div
-            className={`${styles.wrap} ${theme.border_v1} ${theme.back_r2}`}
+            className={`${styles.wrap} ${styles.enterAmt} ${theme.border_v1} ${theme.back_r2}`}
             ref={wrapRef}
         >
             <article>

@@ -1,4 +1,5 @@
 @input-height: 2.2rem;
+@icon-height : 1rem;
 
 .wrap {
     display    : flex;
@@ -6,60 +7,52 @@
     height     : 100%;
 
     >span {
-        height: 1rem;
+        height: @icon-height;
     }
 
     >.text {
-        font-size  : .8rem;
+        font-size  : .9rem;
         margin-left: .5rem;
+        line-height: @icon-height;
     }
 }
 
 .form {
     text-align: center;
-    padding   : 2rem 2rem 0;
+    padding   : 3rem 4rem;
+    font-size : 1.1rem;
 
-    .input-wrap {
-        width        : 100%;
-        border-radius: 0 0 .2rem .2rem;
-        line-height  : @input-height;
-        border-width : 1px;
-        border-style : solid;
-        overflow     : hidden;
-        position     : relative;
-
+    >input {
         &:first-child {
             border-radius: .2rem .2rem 0 0;
             border-bottom: none;
         }
 
-        >input {
-            width      : 100%;
-            padding    : 0 .4rem;
-            line-height: @input-height;
-            height     : @input-height;
-            border     : none;
-        }
+        border-radius: 0 0 .2rem .2rem;
+        font-size    : inherit;
+        padding      : .2rem .4rem;
+        line-height  : @input-height;
+        height       : @input-height;
     }
 
     >button[type='submit'] {
+        font-size    : inherit;
         border       : none;
         width        : 6rem;
-        height       : 2rem;
+        height       : 2.4rem;
         margin       : 2rem 0;
-        border-radius: .2rem;
+        border-radius: .4rem;
     }
-}
 
-.ways {
-    display        : flex;
-    justify-content: space-evenly;
+    .ways {
+        display        : flex;
+        justify-content: space-evenly;
 
-    >section {
-        font-size    : .8rem;
-        border-radius: .2rem;
-        border-width : 1px;
-        border-style : solid;
-        padding      : .4rem .8rem;
+        >section {
+            border-radius: .2rem;
+            border-width : 1px;
+            border-style : solid;
+            padding      : .4rem .8rem;
+        }
     }
 }

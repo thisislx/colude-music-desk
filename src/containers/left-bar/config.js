@@ -1,4 +1,5 @@
 export const
+    _wrapMaxWidth = 500,
     _imgSize = '?param=200y200',
     _likeIconConfig = {
         icon: '&#xe609;',

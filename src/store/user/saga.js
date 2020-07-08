@@ -17,55 +17,44 @@ export default function* () {
 }
 
 function* getIsLogin() {
-    let state = true
     try {
         const res = yield user.isLogin()
-        yield put(assist.changeUserId(res.profile.userId))
+        yield put(assist.changeLoginState(res.profile.userId))
     } catch (e) {
-        state = false
+        console.log('未登录')
     }
-    yield put(assist.changeIsLogin(state))
 }
 function* cellphoneLogin({ value: { phone, password } }) {
     const res = yield user.cellphoneLogin(phone, password)
-    console.log(res)
     if (res.code >= 200 && res.code < 300) {
-        yield put(assist.assist.changeIsLogin(true))
-        yield put(assist.changeUserId(res.profile.userId))
+        yield put(assist.changeLoginState(res.profile.userId))
     } else {
-        yield put(assist.changeToast(res.msg, 'err'))
+        // yield put(assist.changeToast(res.msg, 'err'))
     }
 }
 function* emailLogin({ value: { email, password } }) {
-    console.log(email, password)
     const res = yield user.emailLogin(email, password)
+    console.log(res)
     if (res.code === 200) {
-        yield put(assist.changeIsLogin(true))
-        yield put(assist.changeUserId(res.profile.userId))
-    } else {
-        yield put(assist.changeToast(res.msg, 'err'))
-    }
+        yield put(assist.changeLoginState(res.profile.userId))
+    } else 1// yield put(assist.changeToast(res.msg, 'err'))
 }
 function* logout() {
     const res = yield user.logout()
-    if (res.code >= 200 && res.code < 300) {
-        yield put(assist.changeUserId(0))
-        yield put(assist.changeDetail())
-        yield put(assist.changeIsLogin(false))
-    }
+    yield put(assist.init())
 }
 function* signIn() {
     try {
         const resArr = yield user.signIn()
-        yield put(assist.changeToast(`经验+ ${resArr.reduce((prev, cur) => prev + cur.point, 0)}`))
+        // yield put(assist.changeToast(`经验+ ${resArr.reduce((prev, cur) => prev + cur.point, 0)}`))
         yield put(assist.changeSignInState())
     } catch (err) {
-        yield put(assist.changeToast('签到失败', 'err'))
+        // yield put(assist.changeToast('签到失败', 'err'))
     }
 }
 function* getMyDetail({ value: uid }) {
     const res = yield user.getDetail(uid)
-    yield put(assist.changeDetail(res))
+    yield put(assist.changeMyDetail(res))
 }
 function* getOtherUser({ value: uid }) {
     const res = yield user.getDetail(uid)
@@ -75,7 +64,6 @@ function* toggleFollowUser({ value: [uid, followed] }) {
     try {
         yield user.toggleFollowUser(uid, followed)
     } catch (e) {
-        console.log('togglFollowUser():', e)
         yield put(globalAC.showToast(followed ? '取消失败' : '关注失败', 'err'))
     }
     const otherUser = yield select(state => state.getIn(['user', 'otherUser']))

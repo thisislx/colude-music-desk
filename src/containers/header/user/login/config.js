@@ -7,7 +7,7 @@ export const
             propertys: 'level',
         }, {
             name: '登出',
-            methods: 'logout'
+            method: 'logout'
         }
     ],
     _signInConfig = {

@@ -2,18 +2,16 @@
 import React, { memo, useMemo, useEffect, useCallback } from 'react'
 import styles from './style'
 import _paths from 'config/paths'
-
 import { connect } from 'react-redux'
-import useToast from 'hooks/useToast'
 import { useHistory } from 'react-router-dom'
+import { actionsCreator as userAc } from 'store/user'
 
 import Login from './login'
 import NotLogin from './not-login'
-import { actionsCreator } from 'store/user'
 
 function User(props) {
     const
-        { isLogin, userId, theme, toast_imm, userData_imm } = props,
+        { isLogin, userId, theme, } = props,
         {
             getIsLogin,
             getMyDetail,
@@ -22,20 +20,13 @@ function User(props) {
             cellphoneLogin,
             emailLogin
         } = props,
-        toast = useMemo(() => toast_imm.toJS(), [toast_imm]),
+        {userData_imm } = props,
         userData = useMemo(() => userData_imm.toJS(), [userData_imm]),
         history = useHistory(),
-        showToast = useToast(2000),
         enterUser = useCallback(e => {
             const userId = userData.userPoint.userId
             history.push(_paths.user + userId)
         }, [history, userData])
-
-    // 提示
-    useEffect(() => {
-        if (toast.text)
-            showToast(toast.text, toast.icon)
-    }, [toast])
 
     useEffect(() => {
         getIsLogin()
@@ -45,7 +36,7 @@ function User(props) {
         if (userId && isLogin) {
             getMyDetail(userId)
         }
-    }, [userId, isLogin])
+    }, [userId, isLogin, getMyDetail])
 
     return (
         <div className={styles.wrap}>
@@ -74,34 +65,32 @@ const
             user = state.get('user'),
             isLogin = user.get('isLogin'),
             userId = user.get('userId'),
-            toast_imm = user.get('toast'),
             userData_imm = user.get('detail')
 
         return {
             isLogin,
             userId,
-            toast_imm,
             userData_imm,
         }
     },
     mapDispatch = dispatch => ({
         getIsLogin() {
-            dispatch(actionsCreator.getIsLogin())
+            dispatch(userAc.getIsLogin())
         },
         cellphoneLogin(phone, password) {
-            dispatch(actionsCreator.cellphoneLogin(phone, password))
+            dispatch(userAc.cellphoneLogin(phone, password))
         },
         emailLogin(email, password) {
-            dispatch(actionsCreator.emailLogin(email, password))
+            dispatch(userAc.emailLogin(email, password))
         },
         signIn() {
-            dispatch(actionsCreator.signIn())
+            dispatch(userAc.signIn())
         },
         getMyDetail(uid) {
-            dispatch(actionsCreator.getMyDetail(uid))
+            dispatch(userAc.getMyDetail(uid))
         },
         logout() {
-            dispatch(actionsCreator.logout())
+            dispatch(userAc.logout())
         }
     })
 

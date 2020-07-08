@@ -1,5 +1,12 @@
 @import './assets/fonts/iconfont.css';
 
+
+#app {
+    line-height: 1;
+    height     : 100vh;
+    min-width  : 1000px;
+}
+
 .hide {
     visibility      : hidden;
     position        : absolute;

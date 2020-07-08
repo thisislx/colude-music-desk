@@ -30,8 +30,8 @@ function NotLogin(props) {
     useEffect(() => {
         if (show) listener()
         else closeListner()
+        return () => closeListner()
     }, [show])
-
     return (
         <div
             className={`${styles.wrap} pointer`}
@@ -41,37 +41,33 @@ function NotLogin(props) {
             <span className='iconfont'>&#xe62f;</span>
             <span className={styles.text}>未登录</span>
 
-            <Pad show={show} direction='center'>
-                <>
-                    <form
-                        className={styles.form}
-                        onSubmit={loginHandle}
+            <Pad show={show} direction='center' width={26}>
+                <form
+                    className={`${styles.form} `}
+                    onSubmit={loginHandle}
+                >
+                    {
+                        _loginWay[current].inputTypes.map((item, key) => {
+                            const way = _loginWay[current]
+                            return (
+                                <input
+                                    key={key}
+                                    className={`${theme.border_v1} ${theme.fontColor_v3} ${theme.back_r1}`}
+                                    ref={inputRefs[key]}
+                                    type={way.inputTypes[key]}
+                                    placeholder={way.placehodlers[key]}
+                                    pattern={way.patterns[key]}
+                                />
+                            )
+                        })
+                    }
+
+                    <button
+                        type='submit'
+                        className={`${theme} click-active pointer`}
                     >
-                        {
-                            _loginWay[current].inputTypes.map((item, key) => {
-                                const way = _loginWay[current]
-                                return (
-                                    <section
-                                        key={key}
-                                        className={`${styles.inputWrap} ${theme.border}`}
-                                    >
-                                        <input
-                                            ref={inputRefs[key]}
-                                            type={way.inputTypes[key]}
-                                            placeholder={way.placehodlers[key]}
-                                            pattern={way.patterns[key]}
-                                        />
-                                    </section>
-                                )
-                            })
-                        }
-                        <button
-                            type='submit'
-                            className={`${theme} click-active pointer`}
-                        >
-                            登录
-                        </button>
-                    </form>
+                        登录
+                    </button>
 
                     <footer
                         className={styles.ways}
@@ -88,7 +84,7 @@ function NotLogin(props) {
                             ))
                         }
                     </footer>
-                </>
+                </form>
             </Pad>
         </div>
     )

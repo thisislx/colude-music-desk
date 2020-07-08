@@ -25,10 +25,6 @@ function CommentInput(props) {
             setShowPad(bool)
         }, [padRef]),
         theme = useTheme(themeName),
-        clickHandle = useCallback(e => {
-            setShowPad(true)
-            onClick && onClick()
-        }, [onClick]),
         submitHandle = useCallback((e) => {
             e.preventDefault()
             const
@@ -56,12 +52,11 @@ function CommentInput(props) {
         else cancelListener()
         return () => cancelListener()
     }, [listener, cancelListener, showPad, textAreaRef])
-
     return (
         <>
             <div
-                className={`${styles.inputWrap}  ${theme.border_v1}`}
-                onClick={clickHandle}
+                className={`${styles.inputWrap} ${theme.fontColor_v1} ${theme.border_v1}`}
+                onClick={onClick ? onClick : null}
             >
                 发表评论
             </div>

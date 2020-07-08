@@ -103,12 +103,7 @@ section {
     display: block;
 }
 
-#app {
-    line-height: 1;
-    height     : 100vh;
-    min-width  : 1000px;
-    overflow   : hidden;
-}
+
 
 h1 {
     font-size: 1.6rem;

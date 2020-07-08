@@ -28,7 +28,7 @@ function Songs(props) {
 
     return (
         <ol
-            className={`${theme.fontColor_v1}`}
+            className={`${theme.fontColor_r1}`}
             onDoubleClick={doubleClickHandle}
             onClick={proxyClickHandle}
         >

@@ -1,9 +1,10 @@
-import { put, takeEvery } from 'redux-saga/effects'
+import { put, takeEvery, select } from 'redux-saga/effects'
 import types from './types'
 import { assist } from './actionsCreator'
 import { actionsCreator as globalAC } from '../global'
 import { Search } from 'http'
 import { unifySongsProperty } from 'tools/media'
+import { _searchKey } from './config'
 const search = new Search()
 
 export default function* () {
@@ -25,13 +26,18 @@ function* getSearchSuggest({ value }) {
     const res = yield search.getSuggest(value)
     yield put(assist.getSearchSuggest(res.result))
 }
-function* getSearchResult({ value: [words, type, offset, limit] }) {
+function* getSearchResult({ value: [type, offset, limit] }) {
     const
+        words = yield select(state => state.getIn(['search', 'words'])),
         { result } = yield search.getSearch(words, type, offset, limit),
-        [listKey, totalKey] = Object.keys(result),
-        list = result[listKey],
-        total = result[totalKey]
-    unifySongsProperty(list)
-    list[0].total = total           /* 第一条数据记录总长度， 非arr属性被转成immutable会被忽略 */
-    yield put(assist.updateResult(type, offset, list))
+        keys = _searchKey[type],
+        list = result[keys[0]],
+        total = result[keys[1]]
+
+    yield put(assist.addHistory(words))
+    if (list && list.length) {
+        unifySongsProperty(list)        /* 标准化数据 */
+        list[0] && (list[0].total = total)         /* 第一条数据记录总长度， 非arr属性被转成immutable会被忽略 */
+        yield put(assist.updateResult(type, offset, list))
+    }
 }

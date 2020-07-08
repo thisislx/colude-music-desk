@@ -87,7 +87,7 @@ function UI(props) {
                                                 img={menu.coverImgUrl}
                                                 count={menu.playCount}
                                                 name={menu.name}
-                                                length={1}
+                                                length={menu.trackCount}
                                                 id={menu.id}
                                             />
                                         ))

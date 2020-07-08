@@ -103,6 +103,7 @@ function Video(props) {
 
     /* 请求url */
     useEffect(() => {
+        console.log(id)
         getUrl(id)
     }, [id, getUrl])
 

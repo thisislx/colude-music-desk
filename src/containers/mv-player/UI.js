@@ -1,6 +1,6 @@
-import React, { memo, useMemo, useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import styles from './style'
-import { _commentLimit, _mvCoverSize } from './config'
+import { _commentLimit, _mvCoverSize, _replyCommentConfig, _makeCommentConfig } from './config'
 import PropTypes from 'prop-types'
 import { computeClockMin } from 'tools/media'
 import { convertHugeNum } from 'tools'
@@ -10,24 +10,25 @@ import Video from '../video'
 import Pagination from 'base-ui/pagination'
 import Comment, { CommentInput } from 'components/comment'
 import OpcityWrap from 'base-ui/fixed-wrap/opcity'
+import MvRelate from './mv-relate'
 
 function UI(props) {
     const
         { mvData, theme, comments, briefHotComments, commentsOffset, relateMv } = props,
         { setCommentsOffset, toggleMv } = props,
         [show, setShow] = useState(true),
+        [commentInputConfig, setCommentInputConfig] = useState({ show: false }),
         artists = mvData.artists,
         videoGroup = mvData.videoGroup,
         commentTotal = comments.length ? comments[0].total : 0,
         commentRef = useRef(null),
         lockCommentScroll = useRef(true),
-        relateMvClickHandle = useCallback(e => {
-            const
-                el = e.target,
-                mvid = el.getAttribute('data-mv-id'),
-                userid = el.getAttribute('data-user-id')
-            if (mvid) toggleMv(mvid)
-        }, [toggleMv])
+        makeCommentHandle = useCallback(() => {
+            setCommentInputConfig(_makeCommentConfig)
+        }, []),
+        replayHandle = useCallback((userId, userName) => {
+            setCommentInputConfig(_replyCommentConfig(userId, userName))
+        }, [])
 
     /* mv-data变化初始化 , 先锁住*/
     useEffect(() => {
@@ -45,7 +46,6 @@ function UI(props) {
         <OpcityWrap
             show={show}
             className={styles.wrap}
-            state={['top']}
             fixed={true}
         >
             <section className={styles.left}>
@@ -66,24 +66,22 @@ function UI(props) {
                                 >
                                     {item.name}
                                     {
-                                        index === artists.length - 1
-                                            ? null : ' /'
+                                        index === artists.length - 1 ? null : ' /'
                                     }
-                                        &nbsp;
+                                    &nbsp;
                                 </li>
                             ))
                         }
                     </ol>
                 </header>
-                <main>
-                    <Video />
-                </main>
+                <Video />
                 <article ref={commentRef}>
-                    <CommentInput />
+                    <CommentInput config={commentInputConfig} onClick={makeCommentHandle} />
                     <div className={commentsOffset === 0 ? '' : 'hide'}>
                         <Comment
                             list={briefHotComments}
                             title={`精彩评论(${briefHotComments.length})条`}
+                            onReply={replayHandle}
                         />
                     </div>
                     <Comment
@@ -99,7 +97,6 @@ function UI(props) {
                     </footer>
                 </article>
             </section>
-
             <section className={styles.right}>
                 <header className={theme.border_v1}>
                     <h2>MV介绍</h2>
@@ -133,54 +130,7 @@ function UI(props) {
                         }
                     </ol>
                 </section>
-                <footer>
-                    <h2>相关推荐</h2>
-                    <ol
-                        className={styles.relateMv}
-                        onClick={relateMvClickHandle}
-                    >
-                        {
-                            relateMv.map(mv => (
-                                <li
-                                    key={mv.id}
-                                >
-                                    <aside>
-                                        <img
-                                            className='pointer'
-                                            data-mv-id={mv.id}
-                                            src={mv.cover + _mvCoverSize}
-                                        />
-                                        <span className={`${theme.back_v2} ${theme.fontColor_r4}`}>
-                                            {convertHugeNum(mv.playCount)}
-                                        </span>
-                                    </aside>
-                                    <section className={`${theme.fontColor_v1}`}>
-                                        <p
-                                            className={`${theme.fontColor_v2} pointer ${theme.textHover_v2}`}
-                                            data-mv-id={mv.id}
-                                        >
-                                            {mv.name}
-                                        </p>
-                                        <span data-mv-id={mv.id}>
-                                            {computeClockMin(mv.duration)}
-                                        </span>
-                                        <div className={styles.creators}>
-                                            by：{mv.artists.map(item => (
-                                            <span
-                                                className={`pointer ${theme.textHover_v1}`}
-                                                key={item.id}
-                                                data-user-id={item.id}
-                                            >
-                                                {item.name}
-                                            </span>
-                                        ))}
-                                        </div>
-                                    </section>
-                                </li>
-                            ))
-                        }
-                    </ol>
-                </footer>
+                <MvRelate onClick={toggleMv} list={relateMv} description={mvData.description}/>
             </section>
         </OpcityWrap>
     )

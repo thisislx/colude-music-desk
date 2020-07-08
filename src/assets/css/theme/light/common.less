@@ -20,11 +20,11 @@
 .total-light(500);
 
 .light-backHover(@count, @color) when(@count > 0) {
-    @1      : linear-gradient(rgba(0, 0, 0, .04), rgba(0, 0, 0, .04));
-    @2      : linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1));
+    @1      : linear-gradient(rgba(0, 0, 0, .08), rgba(0, 0, 0, .08));
+    @2      : linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, .2));
     @-count : @count * -1;
-    @-1     : linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1));
-    @-2     : linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1));
+    @-1     : linear-gradient(hsla(0, 0%, 100%, .1), hsla(0, 0%, 100%, .1));
+    @-2     : linear-gradient(hsla(0, 0%, 100%, .6), hsla(0, 0%, 100%, .6));
 
     .theme-@{color}-backHover-v@{count} {
         &:hover {
@@ -96,7 +96,7 @@
 }
 
 .light-back(@count, @color) when(@count > 0) {
-    @1      : rgba(140, 140, 140, .1);
+    @1      : rgba(160, 160, 160, .1);
     @2      : rgba(120, 120, 120, .3);
     @3      : rgba(40, 40, 40, .98);
     @4      : rgba(20, 20, 20, .98);

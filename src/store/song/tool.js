@@ -11,10 +11,10 @@ export const
         const
             arr = str.match(_lyrciReg),
             res = {}
-
+        if (!arr) return '没有歌词'
         for (const item of arr) {
             const [time, text] = item.split(']')
-            res[minToTime_(time.slice(1))] = text
+            res[minToTime_(time.slice(1)) - 200] = text
         }
         return res
     },
@@ -25,7 +25,7 @@ export const
         for (const [key, val] of Object.entries(translation)) {
             if (!origin[key] || !origin[key].trim()) continue
             const newVal = (origin[key] || '') + (val ? `\n${val}` : '')
-            res[+key + 200] = newVal
+            res[+key] = newVal
         }
         return res
     }

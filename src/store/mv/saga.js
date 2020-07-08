@@ -2,6 +2,7 @@ import { takeEvery, put, select } from 'redux-saga/effects'
 import types from './types'
 import { assist } from './actionsCreator'
 import { Mv } from 'http'
+import { _isMvId, uniformData_ } from './tool'
 const _mv = new Mv()
 
 export default function* () {
@@ -11,16 +12,61 @@ export default function* () {
     yield takeEvery(types.SAGA_GET_RELATE_MV, getRelateMv)
 }
 
-function* getData({ value: mvid }) {
+function* getData({ value: id }) {
     yield put(assist.init())
-    const { data } = yield _mv.getData(mvid)
+    if (_isMvId(id)) yield* getMvData_(id)
+    else yield* getVideoData_(id)
+}
+function* getUrl({ value: id }) {
+    if (_isMvId(id)) yield* getMvUrl_(id)
+    else yield* getVideoUrl_(id)
+}
+function* getComment({ value: [id, offset, limit] }) {
+    if (_isMvId(id)) yield* getMvComment_(id, offset, limit)
+    else yield* getVideoComment_(id, offset, limit)
+}
+function* getRelateMv({ value: id }) {
+    if (_isMvId(id)) {
+        const { mvs } = yield _mv.getRelateMv(id)
+        yield put(assist.changeRelateMv(mvs))
+    }
+}
+
+/* ---分割线--- */
+function* getMvData_(id) {
+    const { data } = yield _mv.getMvData(id)
     yield put(assist.changeData(data))
 }
-function* getUrl({ value: mvid }) {
-    const { data: { url } } = yield _mv.getUrl(mvid)
-    yield put(assist.changeCurrentUrl(url))
+function* getVideoData_(id) {
+    const { data } = yield _mv.getVideoData(id)
+    yield put(assist.changeData(uniformData_(data)))
 }
-function* getComment({ value: [mvid, offset, limit] }) {
+
+function* getMvUrl_(id) {
+    const res = yield _mv.getMvUrl(id)
+    yield put(assist.changeCurrentUrl(res.data.url))
+}
+function* getVideoUrl_(id) {
+    const res = yield _mv.getVideoUrl(id)
+    yield put(assist.changeCurrentUrl(res.urls[0].url))
+}
+
+function* getMvComment_(id, offset, limit) {
+    const
+        lastTime = yield* _getCommentLastTime_(offset),
+        res = yield _mv.getMvComment(id, offset, limit, lastTime)
+    yield* _commentPut_(res, offset)
+}
+function* getVideoComment_(id, offset, limit) {
+    const
+        lastTime = yield* _getCommentLastTime_(offset),
+        res = yield _mv.getVideoComment(id, offset, limit, lastTime)
+    yield* _commentPut_(res, offset)
+}
+
+
+/* ---分割线--- */
+function* _getCommentLastTime_(offset) {
     const
         __comments = (yield select(state => state.getIn(['mv', 'comments']))).toJS(),
         __lastPage = offset === 0 ? 0 : Reflect.has(__comments, offset - 1) ? offset - 1 : (() => {
@@ -30,14 +76,15 @@ function* getComment({ value: [mvid, offset, limit] }) {
         lastTime = __comments[__lastPage] ? (() => {
             const cur = __comments[__lastPage]
             return cur[cur.length - 1].time
-        })() : undefined,
-        { comments, hotComments = [], total } = yield _mv.getComment(mvid, offset, limit, lastTime)
-    comments[0].total = total
-    if (!offset && hotComments.length)
-        yield put(assist.changeBriefHotComments(hotComments))
-    yield put(assist.updateComment(offset, comments))
+        })() : undefined
+    return lastTime
 }
-function* getRelateMv({ value: mvid }) {
-    const { mvs } = yield _mv.getRelateMv(mvid)
-    yield put(assist.changeRelateMv(mvs))
+function* _commentPut_(res, offset) {
+    const { comments, hotComments, total, moreHot } = res
+    comments[0] && (comments[0].total = total)
+    if (!offset && hotComments.length) {
+        hotComments[0] && (hotComments[0].more = moreHot)
+        yield put(assist.changeBriefHotComments(hotComments))
+    }
+    yield put(assist.updateComment(offset, comments))
 }

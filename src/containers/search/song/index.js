@@ -1,6 +1,7 @@
 import React, { memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import Songs from 'components/songs'
+import styles from './style'
 
 function Song(props) {
     const
@@ -8,12 +9,13 @@ function Song(props) {
         doubleClickHandle = useCallback(index => {
             addSongs && addSongs(list[index].id)
         }, [list, addSongs])
-
     return (
-        <Songs
-            onDoubleClick={doubleClickHandle}
-            list={list}
-        />
+        <div className={styles.wrap}>
+            <Songs
+                onDoubleClick={doubleClickHandle}
+                list={list}
+            />
+        </div>
     )
 }
 

@@ -7,7 +7,7 @@ import BaseWrap from '../index'
 
 function OpcityWrap(props) {
     const
-        { children, show = true, state, className, el, fixed } = props,
+        { children, show = true, className, el, fixed } = props,
         history = useHistory()
 
     return (
@@ -20,7 +20,7 @@ function OpcityWrap(props) {
             key={location.pathname}
             onExited={() => history.goBack()}
         >
-            <BaseWrap state={state} className={className} el={el} fixed={fixed}>
+            <BaseWrap className={className} el={el} fixed={fixed}>
                 {children}
             </BaseWrap>
         </CSSTransition>
@@ -32,7 +32,6 @@ OpcityWrap.propTypes = {
     className: PropTypes.string,
     el: PropTypes.object,
     show: PropTypes.bool,       /* 控制路由 */
-    state: PropTypes.array,     /* 显示左边，header， footer */
     fixed: PropTypes.bool,
 }
 

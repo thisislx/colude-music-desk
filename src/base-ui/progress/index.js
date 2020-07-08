@@ -1,6 +1,7 @@
 import React, { memo, useRef, useMemo, useEffect, useCallback, useState } from 'react'
 import styles from './style'
-import PropTypes, { func } from 'prop-types'
+import PropTypes from 'prop-types'
+import { debounce } from 'tools'
 import { connect } from 'react-redux'
 import useTheme from 'hooks/useTheme'
 import useDomMove from 'hooks/useDomMove'
@@ -10,25 +11,21 @@ function Progress(props) {
     const
         {
             themeName,
-            height = .3,
-            width = 100,
-            value = 0,
-            buffer = 0,
+            height = .3,    /* rem */
+            width = 100,    /* 百分比 */
+            value = 0,      /* 0 - 1 */
+            buffer = 0,     /* 0 - 1 */
             loading = false,
             pointer = true,   /* @true(一直展示icon)  @false(静态时隐藏)*/
         } = props,
         { onChange, onChanging } = props,
         [percent, setPercent] = useState(value),   /* 独立于value */
-        [percentWidth, setpercentWidth] = useState(0),      /* percentRef 的width(px) */
+        [percentElWidth, setpercentElWidth] = useState(0),      /* percentRef 的width(px) */
         wrapRef = useRef(null),
         wrapPos = useRef(null),
         percentRef = useRef(null),
         pointerRef = useRef(null),
         localChange = useRef(false),  /* 是否手动调整进度条(避免value的副作用) */
-        style = useMemo(() => ({
-            width: `${width}%`,
-            height: `${height}rem`,
-        }), [height, width]),
         pointerStyle = useMemo(() => ({
             width: `${height * 3}rem`,
             height: `${height * 3}rem`,
@@ -39,11 +36,11 @@ function Progress(props) {
         theme = useTheme(themeName),
         wrapClickHandle = useCallback(e => {
             const { x } = wrapPos.current
-            setpercentWidth(e.clientX - x)
+            setpercentElWidth(e.clientX - x)
             localChange.current = true  /* 本地change */
-        }, [wrapRef, onChange]),
+        }, [wrapRef, wrapPos, onChange]),
         moveHandle = useCallback(function inner__(width, end) {
-            setpercentWidth(width)
+            setpercentElWidth(width)
             localChange.current = true  /* 本地change */
             clearTimeout(inner__.sid)
             inner__.sid = setTimeout(() => {
@@ -56,10 +53,11 @@ function Progress(props) {
         if (localChange.current) {
             const
                 { width } = wrapPos.current,
-                val = Math.max(0, Math.min(1, percentWidth / width))
+                val = Math.max(0, Math.min(1, percentElWidth / width))
+                console.log(percentElWidth, width)
             setPercent(val)
         }
-    }, [percentWidth, wrapPos])
+    }, [percentElWidth, wrapPos])
 
     /* 改变进度条样式 */
     useEffect(() => {
@@ -84,9 +82,12 @@ function Progress(props) {
 
     /* 获取dom默认信息 */
     useEffect(() => {
-        function handle() {
-            wrapPos.current = wrapRef.current.getBoundingClientRect()
-        }
+        const handle = debounce(() => {
+            if (!wrapRef.current) return  /* 解决热更新报错 */
+            const rect = wrapRef.current.getBoundingClientRect()
+            if (rect.width === 0) setTimeout(handle, 200)
+            else wrapPos.current = rect
+        }, 200)
         handle()
         window.addEventListener('resize', handle)
         return () => {
@@ -96,39 +97,43 @@ function Progress(props) {
 
     return (
         <div
-            style={style}
+            style={{ width: `${width}%` }}
+            className={`${styles.wrap}`}
             ref={wrapRef}
-            className={`${styles.wrap} ${theme.back_v1} pointer`
-                + ` ${pointer ? '' : styles.showPointer}`}
             onClick={wrapClickHandle}
         >
-            {/* 进度 */}
             <main
-                ref={percentRef}
-                className={`${theme} ${styles.percent}`}
+                style={{ height: `${height}rem` }}
+                className={`${theme.back_v1} ${styles.main} pointer`
+                    + ` ${pointer ? '' : styles.showPointer}`}
             >
-                <div
-                    ref={pointerRef}
-                    className={`${styles.pointer} ${pointer ? '' : styles.hide} ${theme.border_r2}`
-                        + ` ${theme}`}
-                    style={pointerStyle}
+                {/* 进度 */}
+                <article
+                    ref={percentRef}
+                    className={`${theme} ${styles.percent}`}
                 >
-                    {
-                        loading ?
-                            <div className={styles.loading}>
-                                <Loading size={.7} />
-                            </div> : null
-                    }
+                    <span
+                        ref={pointerRef}
+                        className={`${styles.pointer} ${pointer ? '' : styles.hide} ${theme.border_r2}`
+                            + ` ${theme}`}
+                        style={pointerStyle}
+                    >
+                        {
+                            loading ?
+                                <span className={styles.loading}>
+                                    <Loading size={.7} />
+                                </span> : null
+                        }
+                    </span>
+                </article>
+                {/* 缓冲条 */}
+                <div
+                    className={`${styles.buffer} ${theme.back_v2}`}
+                    style={{ width: `${buffer * 100}%` }}
+                >
                 </div>
-
             </main>
-
-            <div
-                className={`${styles.buffer} ${theme.back_v2}`}
-                style={{ width: `${buffer * 100}%` }}
-            >
-            </div>
-        </div>
+        </div >
     )
 }
 

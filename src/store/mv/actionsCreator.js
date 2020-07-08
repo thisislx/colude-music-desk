@@ -13,7 +13,13 @@ const
                 type: types.CHANGE_BARRAGE,
                 value: fromJS(value)
             }
-        }
+        },
+        changeData(data) {
+            return {
+                type: types.CHANGE_DATA,
+                value: fromJS(data)
+            }
+        },
     },
     sagas = {
         getData(mvid) {
@@ -44,13 +50,8 @@ const
 
 export const assist = {
     init: creator.init,
+    changeData: creator.changeData,
 
-    changeData(data) {
-        return {
-            type: types.CHANGE_DATA,
-            value: fromJS(data)
-        }
-    },
     changeCurrentUrl(url) {
         return {
             type: types.CHANGE_CURRENT_URL,

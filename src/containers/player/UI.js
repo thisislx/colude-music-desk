@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useRef, useState, useCallback, useEffect } from 'react'
 import styles from './style'
-import './fade.css'
 import { _shrinkIconConig, _hotCommentsConfig, _commentsConfig, _commentInputCofig } from './config'
 import { computeArtist } from 'tools/media'
 import CD from 'base-ui/cd'
@@ -10,7 +9,6 @@ import Comment, { CommentInput } from 'components/comment'
 import Pagination from 'base-ui/pagination'
 import OpcityWrap from 'base-ui/fixed-wrap/opcity'
 
-const _layout = ['bottom', 'top']
 function UI(props) {
     const
         {
@@ -71,9 +69,17 @@ function UI(props) {
         <OpcityWrap
             show={isShow}
             className={styles.wrap}
-            state={_layout}
         >
             <header>
+                {/* 缩小 */}
+                <button
+                    onClick={e => setShow(false)}
+                    className={`${_shrinkIconConig.className} ${theme.fontColor_r1}` +
+                        ` ${styles.shrink} ${theme.back_r4} ${theme.boxShadow_v1}`}
+                    dangerouslySetInnerHTML={{ __html: _shrinkIconConig.icon }}
+                >
+                </button>
+
                 <section className={styles.cd}>
                     <CD
                         img={currentSong.al.picUrl}
@@ -87,13 +93,6 @@ function UI(props) {
                 </section>
                 <section className={styles.headerR}>
                     <h1>
-                        <button
-                            onClick={e => setShow(false)}
-                            className={`${_shrinkIconConig.className} ${theme.fontColor_r1}` +
-                                ` ${styles.shrink} ${theme.back_r4} ${theme.boxShadow_v1}`}
-                            dangerouslySetInnerHTML={{ __html: _shrinkIconConig.icon }}
-                        >
-                        </button>
                         {currentSong.name}
                     </h1>
                     <section className={styles.otherData}>
