@@ -11,7 +11,10 @@ const
 process.env.NODE_ENV = consts.PROD
 
 const config = {
-    entry: paths.output.path,
+    output: {
+        filename: 'js/[name]_[contenthash].js',
+        chunkFilename: 'js/[name]_async_[contenthash].js',
+    },
     mode: consts.PROD,
     devtool: 'cheap-source-map',
     module: {
@@ -67,8 +70,7 @@ const config = {
             name: true,
             cacheGroups: {
                 vendors: {
-                   // filename: 'js/vendors.js',
-                    test: /[\\/]node_modules[\\/]/,
+                    test: /node_modules/,
                     priority: -10,
                 },
                 default: {

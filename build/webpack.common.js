@@ -9,8 +9,6 @@ const config = {
     entry: paths.entry,
     output: {
         publicPath: paths.publicPath,
-        filename: 'js/[name].js',
-        chunkFilename: 'js/[name]_async.js',
         libraryTarget: 'var',
         library: '[name]_library'
     },
