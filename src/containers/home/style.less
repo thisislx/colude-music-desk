@@ -1,17 +1,26 @@
 .wrap {
     display       : flex;
     flex-direction: column;
-    height        : 100vh;
-    overflow      : hidden;
+    height        : 100%;
+    width         : 100%;
+    position      : fixed;
+    top           : 0;
+    bottom        : 0;
+    left          : 0;
+    right         : 0;
+    overflow-x    : hidden;
 
     >main {
         flex       : 1;
         user-select: none;
         padding    : 1rem;
         position   : relative;
-        overflow-y : auto;
-        overflow-x : hidden;
+        overflow   : auto;
         max-width  : 80%;
+
+        >article {
+            min-width: 800px;
+        }
 
         &.transition {
             left      : 0;

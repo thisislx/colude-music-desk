@@ -30,7 +30,7 @@ function Header(props) {
             <section className={styles.left}>
                 <aside
                     onClick={clickLogoHandle}
-                    className={`${_icons.logo.className} ${theme.fontColor_r4} ${styles.logo}`}
+                    className={`${_icons.logo.className} ${styles.logo}`}
                     dangerouslySetInnerHTML={{ __html: _icons.logo.icon }}
                 ></aside>
                 <BtnControl theme={theme} />

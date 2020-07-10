@@ -1,5 +1,17 @@
+@backColor_dark: rgba(50, 50, 50, 1);
+@fontColor_dark: #fcfcfc;
+
 .theme-dark {
-    background-color: #222f3e;
-    color           : #fcfcfc;
-    transition      : .5s;
+    background-color: @backColor_dark;
+    color           : @fontColor_dark;
+    transition      : .2s;
+}
+
+.theme-dark-color {
+    color       : @fontColor_dark;
+    border-color: @fontColor_dark;
+}
+
+.theme-dark-loading {
+    background-image: linear-gradient(@backColor_dark 40%, @fontColor_dark 60%);
 }

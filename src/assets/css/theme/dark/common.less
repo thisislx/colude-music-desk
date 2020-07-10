@@ -1,49 +1,135 @@
-.theme-dark-back {
-    background-color: #576574;
-    box-shadow      : 0 0 .2rem .1rem hsla(0, 0%, 100%, .1);
+/* v: 更亮(正数)  r: 更暗(负数) */
+.total-dark(@limit) when(@limit > 99) {
+    @100 : dark;
+    .dark-backHover(2, @@limit);
+    .dark-border(2, @@limit);
+    .dark-textHover(2, @@limit);
+    .dark-boxShadow(2, @@limit);
+
+    .dark-back(4, @@limit);
+    .dark-fontColor(4, @@limit);
+
+    .total-dark(@limit - 100);
 }
 
+.total-dark(100);
 
-.theme-dark-color-v1 {
-    color       : #999;
-    border-color: #999;
+.dark-backHover(@count, @color) when(@count > 0) {
+    @-1     : linear-gradient(rgba(0, 0, 0, .08), rgba(0, 0, 0, .08));
+    @-2     : linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, .2));
+    @-count : @count * -1;
+    @1      : linear-gradient(hsla(0, 0%, 100%, .1), hsla(0, 0%, 100%, .1));
+    @2      : linear-gradient(hsla(0, 0%, 100%, .6), hsla(0, 0%, 100%, .6));
+
+    .theme-@{color}-backHover-v@{count} {
+        &:hover {
+            background-image: @@count;
+        }
+    }
+
+    .theme-@{color}-backHover-r@{count} {
+        &:hover {
+            background-image: @@-count;
+        }
+    }
+
+    .dark-backHover(@count - 1, @color);
 }
 
-.theme-dark-color-v2 {
-    color       : #666;
-    border-color: #666;
+.dark-border(@count, @color) when(@count > 0) {
+    @-1      : 1px solid rgba(0, 0, 0, .1);
+    @-2      : 1px solid rgba(0, 0, 0, .8);
+    @-count : @count * -1;
+    @1     : 1px solid hsla(0, 0%, 100%, .1);
+    @2     : 1px solid hsla(0, 0%, 100%, .8);
 
+    .theme-@{color}-border-v@{count} {
+        border: @@count;
+    }
+
+    .theme-@{color}-border-r@{count} {
+        border: @@-count;
+    }
+
+    .dark-border(@count - 1, @color)
 }
 
-.theme-dark-color-v3 {
-    color       : #333;
-    border-color: #333;
+.dark-boxShadow(@count, @color) when(@count > 0) {
+    @-1     : 0 0 .5rem rgba(0, 0, 0, .2);
+    @-2     : 0 0 .5rem rgba(0, 0, 0, .4);
+    @-count : @count * -1;
+    @1      : 0 0 .5rem hsla(0, 0%, 100%, .2);
+    @2      : 0 0 .5rem hsla(0, 0%, 100%, .4);
+
+    .theme-@{color}-boxShadow-v@{count} {
+        box-shadow: @@count;
+    }
+
+    .theme-@{color}-boxShadow-r@{count} {
+        box-shadow: @@-count;
+    }
+
+    .dark-boxShadow(@count - 1, @color);
 }
 
-.theme-dark-color-v4 {
-    color       : #000;
-    border-color: #000;
+.dark-textHover(@count, @color) when(@count > 0) {
+    @-1     : #444;
+    @-2     : #000;
+    @-count : @count * -1;
+    @1      : #aaa;
+    @2      : #fff;
+
+    .theme-@{color}-textHover-v@{count}:hover {
+        color: @@count;
+    }
+
+    .theme-@{color}-textHover-r@{count}:hover {
+        color: @@-count;
+    }
+
+    .dark-textHover(@count - 1, @color);
 }
 
-/* 反色dark */
-.theme-dark-color-r1 {
-    color       : #ededed;
-    border-color: #ededed;
+.dark-back(@count, @color) when(@count > 0) {
+    @-1     : rgba(100, 100, 100, .98);
+    @-2     : rgba(50, 50, 50, .98);
+    @-3     : rgba(40, 40, 40, .98);
+    @-4     : rgba(20, 20, 20, .98);
+    @-count : @count * -1;
+    @1      : hsla(0, 0%, 100%, .2);
+    @2      : hsla(0, 0%, 100%, .4);
+    @3      : hsla(0, 0%, 100%, .6);
+    @4      : hsla(0, 0%, 100%, .98);
+
+    .theme-@{color}-back-v@{count} {
+        background-color: @@count;
+    }
+
+    .theme-@{color}-back-r@{count} {
+        background-color: @@-count;
+    }
+
+    .dark-back(@count - 1, @color);
 }
 
+.dark-fontColor(@count, @color) when(@count > 0) {
+    @-1     : #666;
+    @-2     : #444;
+    @-3     : #222;
+    @-4     : #000;
+    @-count : @count * -1;
+    @1      : #888;
+    @2      : #aaa;
+    @3      : #ccc;
+    @4      : #fff;
 
-.theme-dark-color-r2 {
-    color       : #efefef;
-    border-color: #efefef;
-}
+    .theme-@{color}-fontColor-v@{count} {
+        color: @@count;
+    }
 
+    .theme-@{color}-fontColor-r@{count} {
+        color: @@-count;
+    }
 
-.theme-dark-color-r3 {
-    color       : #fefefe;
-    border-color: #fefefe;
-}
-
-.theme-dark-color-r4 {
-    color       : #fff;
-    border-color: #fff;
+    .dark-fontColor(@count - 1, @color);
 }

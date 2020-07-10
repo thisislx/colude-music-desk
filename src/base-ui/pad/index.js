@@ -37,7 +37,7 @@ function Pad(props) {
         }, [width, point, showPointer, direction, activityIsLeft]),
         theme = useTheme(themeName),
         className = useMemo(() =>
-            `${styles.wrap} ${theme.back_r4} ${theme.boxShadow_v1} ${theme.fontColor_v1} `
+            `${styles.wrap} ${theme.back_r2} ${theme.boxShadow_v1} ${theme.fontColor_v2} `
             + (center ? styles.center : '')
             + (show ? '' : ' hide')
             , [theme, show]),

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { lazy, memo, useRef, useCallback, useEffect, useState } from 'react'
+import React, { lazy, memo, useRef, useCallback, useEffect, useState, Suspense } from 'react'
 import styles from './style'
 import { _navConfig } from './config'
 import _paths from 'config/paths'
@@ -61,11 +61,13 @@ function Home(props) {
                         }
                     </Tabs>
                 </article>
-                <article>
-                    {
-                        renderRoutes(props.route.routes)
-                    }
-                </article>
+                <Suspense fallback='loading'>
+                    <article>
+                        {
+                            renderRoutes(props.route.routes)
+                        }
+                    </article>
+                </Suspense>
             </main>
             <Footer />
         </Wrap>

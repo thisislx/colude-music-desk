@@ -1,6 +1,8 @@
 .wrap {
-    position: relative;
-    overflow: hidden;
+    position        : relative;
+    overflow        : hidden;
+    background-color: #000;
+    color           : #ccc;
 
     &:fullscreen {
         >header {
@@ -52,12 +54,12 @@
 }
 
 .controls {
-    display        : flex;
-    justify-content: space-between;
-    align-items    : center;
-    padding        : 0 .2rem;
-    height         : 2rem;
-    line-height    : 2rem;
+    display         : flex;
+    justify-content : space-between;
+    align-items     : center;
+    height          : 2rem;
+    line-height     : 2rem;
+    background-color: hsla(0, 0%, 100%, .1);
 
     :global(.iconfont) {
         font-size: 1.1rem;
@@ -74,7 +76,6 @@
         .volume-control {
             width        : 5rem;
             margin-right : 2rem;
-            box-shadow   : 0 0 0 1px hsla(0, 0%, 100%, .2);
             border-radius: .2rem;
         }
     }

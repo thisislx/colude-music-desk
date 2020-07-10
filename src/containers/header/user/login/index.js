@@ -25,7 +25,6 @@ function Login(props) {
             closeListener()
         }
     }, [show, listener, closeListener])
-
     return (
         <div
             className={styles.wrap}
@@ -53,7 +52,7 @@ function Login(props) {
                         </section>
                         {/* 签到 */}
                         <button
-                            className={`${theme.border_v2} ${theme.back_r4}`}
+                            className={`${theme.border_v2} ${theme.back_r4} `}
                             onClick={pcSign ? null : signIn}
                         >
                             {_signInConfig[pcSign]}

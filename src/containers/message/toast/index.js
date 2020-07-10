@@ -9,10 +9,11 @@ function Toast(props) {
         iconHtml = useMemo(() => ({
             __html: icons[icon] || ''
         }), [icon])
+
     return (
-        <div className={styles.wrap + (is ? '' : ' hide')}>
+        <div className={`${styles.wrap} ${is ? '' : styles.hide}`}>
             <header
-                className={`iconfont ${theme}` + (icon ? '' : ' hide')}
+                className={`iconfont ${theme} ${icon ? '' : styles.hide}`}
                 dangerouslySetInnerHTML={iconHtml}
             >
             </header>

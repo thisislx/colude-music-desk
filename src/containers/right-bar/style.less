@@ -10,17 +10,14 @@
     top                       : 0;
     font-size                 : .9rem;
     user-select               : none;
-    min-width                 : 1rem;
+    min-width                 : @controlWidth;
     z-index                   : 4;
     transition-timing-function: ease-out;
     overflow-y                : auto;
     overflow-x                : hidden;
 
-    &.hide {
-        .list {
-            height  : 100%;
-            overflow: hidden;
-        }
+    &::-webkit-scrollbar {
+        display: none
     }
 
     >* {
@@ -60,13 +57,12 @@
 }
 
 .control {
-    position        : absolute;
-    top             : 0;
-    bottom          : 0;
-    left            : 0;
-    width           : @controlWidth;
-    cursor          : e-resize;
-    background-image: linear-gradient(hsla(0, 0%, 100%, .9), hsla(0, 0%, 100%, .9));
+    position: absolute;
+    top     : 0;
+    bottom  : 0;
+    left    : 0;
+    width   : @controlWidth;
+    cursor  : e-resize;
 }
 
 .song-item {

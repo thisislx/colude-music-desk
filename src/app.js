@@ -6,9 +6,8 @@ import store from './store'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
 import routes from './routes'
-import LoadingIcon from './base-ui/loading-icon'
-
 import { hot } from 'react-hot-loader/root'
+
 const
     Message = lazy(() => import(/* webpackChunkName: 'message' */ './containers/message')),
     Music = lazy(() => import(/* webpackChunkName: 'music' */ './containers/music'))
@@ -17,9 +16,10 @@ function App() {
     return (
         <Provider store={store}>
             <Router>
-                <Suspense fallback={<LoadingIcon center={true} />}>
-                    {renderRoutes(routes)}
-
+                {
+                    renderRoutes(routes)
+                }
+                <Suspense fallback=''>
                     {/* 功能组件 */}
                     <Message />
                     <Music />

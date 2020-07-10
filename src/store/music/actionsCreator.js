@@ -22,6 +22,12 @@ const sagas = {
             value: [Array.isArray(ids) ? ids : [ids], source]
         }
     },
+
+    changeMode() {
+        return {
+            type: types.SAGA_CHANGE_MODE,
+        }
+    }
 }
 
 const creator = {
@@ -66,11 +72,6 @@ const creator = {
         }
     },
 
-    changeMode() {
-        return {
-            type: types.CHANGE_MODE
-        }
-    },
     nextSong() {
         return {
             type: types.NEXT_SONG
@@ -129,7 +130,13 @@ export const assist = {
             type: types.ADD_SONGS,
             value: fromJS(obj)
         }
-    }
+    },
+    changeMode(mode) {
+        return {
+            type: types.CHANGE_MODE,
+            value: fromJS(mode)
+        }
+    },
 }
 
 export default Object.assign(creator, sagas)

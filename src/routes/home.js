@@ -27,6 +27,6 @@ export default [
         path: `${_paths.user}:id`,
         component: User
     }, {
-        render() { return <> </> },
+        render() { return <Redirect to='/' /> },
     },
 ]

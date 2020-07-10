@@ -4,7 +4,6 @@
     position        : fixed;
     left            : 50%;
     top             : 50%;
-    transform       : translate(-50%, -50%);
     padding         : .4rem .8rem;
     max-width       : 14rem;
     text-align      : center;
@@ -17,11 +16,14 @@
     z-index         : 99;
     min-width       : 6rem;
 
-    &:global(.hide) {
-        transform: translate(-50%, -50%) scale(.1);
+
+    &.hide,
+    .hide {
+        display  : none;
+        transform: translate(-50%, -50%) translate(-50%, -50%) scale(.1);
     }
 
-    >:global(.iconfont) {
+    >header {
         box-shadow   : 0 0 .2rem .1rem @back-color inset;
         font-size    : 1.8rem;
         display      : inline-block;

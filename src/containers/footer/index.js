@@ -1,10 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { memo, useMemo, useCallback, useState, useEffect, useRef } from 'react'
+import React, { memo, useMemo, useCallback, useEffect, useRef } from 'react'
 import styles from './style'
 import { connect } from 'react-redux'
 import useTheme from 'hooks/useTheme'
-import useToast from 'hooks/useToast'
-import useClick from 'hooks/useClick'
 import { _percentConfig, _volumePercentConfig } from './config'
 import { _mediaIcons } from 'config/icons'
 import { computeClockMin } from 'tools/media'
@@ -16,18 +14,15 @@ import Progress from 'base-ui/progress'
 let _silenceAgo = 0    /* 静音恢复 */
 function Footer(props) {
     const
-        { themeName, playing, volume, playPercent, playLoading, buffer } = props,
+        { themeName, playing, volume, playPercent, playLoading, buffer, playModeIcon } = props,
         {
             togglePlaying, changePercent, changeVolume,
             changePlayMode, nextSong, previousSong,
             changeRightBarShow,
         } = props,
-        { playMode_imm, currentSong_imm, rightBar_imm } = props,
+        { currentSong_imm } = props,
         currentSong = useMemo(() => currentSong_imm.toJS(), [currentSong_imm]),
-        playMode = useMemo(() => playMode_imm.toJS(), [playMode_imm]),
-        isInit = useRef(true),
         theme = useTheme(themeName),
-        showToast = useToast(1200),
         endTime = useMemo(() => computeClockMin(currentSong.dt), [currentSong]),
         currentTime = useMemo(() => computeClockMin(currentSong.dt * playPercent), [currentSong, playPercent]),
         silenceHandle = useCallback((e) => {
@@ -43,34 +38,24 @@ function Footer(props) {
                 _silenceAgo = volume
                 changeVolume(0)
             }
-        }, [changeVolume, volume]),
-        playControlClassName = useMemo(() =>
-            `${theme.fontColor_r4} ${theme}`, [theme])
-
-    useEffect(() => {
-        if (!isInit.current) showToast(playMode.name)
-    }, [playMode, showToast, isInit])
-
-    useEffect(() => {
-        isInit.current = false
-    }, [])
+        }, [changeVolume, volume])
 
     return (
         <footer className={`${styles.wrap} ${theme.back_r3} ${theme.border_v1} ${theme.fontColor_v1}`}>
             <section className={styles.playControl}>
                 <span
                     onClick={previousSong}
-                    className={`${_mediaIcons.previous.className} ${playControlClassName}`}
+                    className={`${_mediaIcons.previous.className} ${theme}`}
                     dangerouslySetInnerHTML={{ __html: _mediaIcons.previous.icon }}
                 ></span>
                 <span
                     onClick={e => togglePlaying()}
-                    className={`${_mediaIcons.control.className} ${playControlClassName}`}
+                    className={`${_mediaIcons.control.className} ${theme}`}
                     dangerouslySetInnerHTML={{ __html: _mediaIcons.control.icon(playing) }}
                 ></span>
                 <span
                     onClick={nextSong}
-                    className={`${_mediaIcons.next.className} ${playControlClassName}`}
+                    className={`${_mediaIcons.next.className} ${theme}`}
                     dangerouslySetInnerHTML={{ __html: _mediaIcons.next.icon }}
                 ></span>
             </section>
@@ -108,7 +93,7 @@ function Footer(props) {
 
             <span
                 className={`${_mediaIcons.volume.className} ${styles.miniIcons}`}
-                dangerouslySetInnerHTML={{ __html: playMode.icon }}
+                dangerouslySetInnerHTML={{ __html: playModeIcon }}
                 onClick={changePlayMode}
             ></span>
 
@@ -132,7 +117,7 @@ const
             songList_imm = music.get('list'),
             volume = music.get('volume'),
             buffer = music.get('buffer'),
-            playMode_imm = music.get('mode'),
+            playModeIcon = music.getIn(['mode', 'icon']),
             currentSong_imm = music.get('currentSong')
 
         return {
@@ -143,7 +128,7 @@ const
             playLoading,
             buffer,
 
-            playMode_imm,
+            playModeIcon,
             songList_imm,
             currentSong_imm,
         }

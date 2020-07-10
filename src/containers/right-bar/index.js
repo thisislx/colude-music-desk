@@ -2,7 +2,6 @@ import React, { memo, useRef, useEffect, useCallback, useMemo, createRef } from 
 import styles from './style'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
-import { debounce } from 'tools'
 import { computeArtist, computeClockMin } from 'tools/media'
 import { _mediaIcons } from 'config/icons'
 import _paths from 'config/paths'
@@ -16,13 +15,13 @@ import useDomMove from 'hooks/useDomMove'
 
 function RightBar(props) {
     const
-        { currentIndex, themeName, headerHeight, footerHeight, show } = props,
-        { changePlayIndex, changeRightBarRef, changeRightBarShow } = props,
-        { playlist_imm } = props,
-        playlist = useMemo(() => playlist_imm.toJS(), [playlist_imm]),
+        { currentSongId, themeName, headerHeight, footerHeight, show } = props,
+        { changePlayIndex, /* changeRightBarRef, */ changeRightBarShow } = props,
+        { list_imm } = props,
+        list = useMemo(() => list_imm.toJS(), [list_imm]),
+        currentIndex = useMemo(() => list.findIndex(song => song.id === currentSongId), [currentSongId, list]),
         history = useHistory(),
         wrapRef = useRef(null),
-        lockScroll = useRef(false),     /* 锁住切歌的进度条跳跃 */
         controlWidthRef = useRef(null),
         songLines = useRef(new Map()),
         theme = useTheme(themeName),
@@ -35,21 +34,14 @@ function RightBar(props) {
         }, [history]),
         doubleClickProxy = useCallback(e => {
             const index = +e.target.getAttribute('data-index')
-            if (Number.isInteger(index)) {
-                changePlayIndex(index)
-                lockScroll.current = true
-            }
-        }, [changePlayIndex, lockScroll]),
+            if (Number.isInteger(index)) changePlayIndex(index)
+        }, [changePlayIndex]),
         wrapMoveHandle = useCallback(width => {
             if (width <= _wrapMaxWidth)
                 wrapRef.current.style.width = (width < _wrapMinLimit ? 0 : width) + 'px'
-        }, [wrapRef]),
-        wrapMoveEndHandle = useCallback(debounce(() => {
-            wrapRef.current.classList[
-                wrapRef.current.offsetWidth < _wrapMinLimit ? 'add' : 'remove'
-            ](styles.hide)
-        }, 100), [wrapRef])
-    useDomMove(wrapMoveHandle, [wrapRef, controlWidthRef], wrapMoveEndHandle, 'right')
+        }, [wrapRef])
+
+    useDomMove(wrapMoveHandle, [wrapRef, controlWidthRef], null, 'right')
 
     useEffect(() => {
         wrapRef.current.style.cssText +=
@@ -62,13 +54,9 @@ function RightBar(props) {
             transition = 'transition-duration: .5s;'
 
         requestAnimationFrame(() => {
-            if (show) {
-                el.classList.remove(styles.hide)
+            if (show)
                 el.style.cssText += `width:${_wrapMaxWidth}px; ${transition}`
-            } else {
-                el.classList.add(styles.hide)
-                el.style.cssText += `width:0; ${transition} `
-            }
+            else el.style.cssText += `width:0; ${transition} `
         })
         setTimeout(() => {
             el.style.transitionDuration = '0s'
@@ -82,25 +70,27 @@ function RightBar(props) {
     }, [show, listener, closeListener])
 
     useEffect(() => {
-        if (lockScroll.current) lockScroll.current = false
-        else {
+        if (~currentIndex) {
             const ref = songLines.current.get(currentIndex)
-            ref.current && ref.current.scrollIntoView(false)
+            ref.current && ref.current.scrollIntoView({
+                block: 'center',
+                behavior: 'smooth',
+            })
         }
-    }, [currentIndex, songLines, playlist, lockScroll])
+    }, [currentIndex, songLines])
 
     return (
         <div
-            className={`${styles.wrap} ${theme.back_r2} ${theme.fontColor_v1} !${styles.hide}`}
+            className={`${styles.wrap} ${theme.back_r2} ${theme.fontColor_v2}`}
             ref={wrapRef}
         >
             {
-                playlist.length ?
+                list.length ?
                     <header>
-                        <aside> 共{playlist.length}首</aside>
+                        <aside> 共{list.length}首</aside>
                         <div className={theme.fontColor_v2}>
-                            <button className={`pointer ${theme.border_v1} ${theme.backHover_r2}`}>清空</button>
-                            <button className={`pointer ${theme.border_v1} ${theme.backHover_r2}`} >收藏全部</button>
+                            <button className={`pointer ${theme.back_r2} ${theme.border_v1} ${theme.backHover_r2}`}>清空</button>
+                            <button className={`pointer ${theme.back_r2} ${theme.border_v1} ${theme.backHover_r2}`} >收藏全部</button>
                         </div>
                     </header> :
                     <header >
@@ -112,9 +102,9 @@ function RightBar(props) {
                 onDoubleClick={doubleClickProxy}
                 className={styles.list}
             >
-                <span className={`${styles.control} ${theme}`} ref={controlWidthRef}></span>
+                <span className={`${styles.control} ${theme.back_v1}`} ref={controlWidthRef}></span>
                 {
-                    playlist.map((song, index) => {
+                    list.map((song, index) => {
                         const sl = songLines.current
                         if (song) {
                             const el = createRef(null)
@@ -123,8 +113,7 @@ function RightBar(props) {
                                 <li
                                     ref={el}
                                     key={song.id}
-                                    className={`${styles.songItem} ${theme.backHover_v1} `}
-
+                                    className={`${styles.songItem}  ${theme.backHover_v1} ${currentIndex === index ? `${theme.back_v1} ${theme.color}`  : ''} `}
                                 >
                                     <section
                                         data-index={index}
@@ -162,13 +151,12 @@ function RightBar(props) {
     )
 }
 
-
 const
     mapState = state => {
         const
             music = state.get('music'),
-            currentIndex = music.get('index'),
-            playlist_imm = music.get('playlist'),
+            currentSongId = music.getIn(['currentSong', 'id']),
+            list_imm = music.get('list'),
             layout = state.get('layout'),
             headerHeight = layout.getIn(['header', 'height']),
             footerHeight = layout.getIn(['footer', 'height'])
@@ -178,17 +166,17 @@ const
             show: state.getIn(['layout', 'rightBar', 'show']),
             headerHeight,
             footerHeight,
-            currentIndex,
-            playlist_imm,
+            currentSongId,
+            list_imm,
         }
     },
     mapDispatch = dispatch => ({
         changePlayIndex(index) {
             dispatch(musicAc.changeIndex(index))
         },
-        changeRightBarRef(ref) {
-            dispatch(layoutAc.changeRightBarRef(ref))
-        },
+        /*       changeRightBarRef(ref) {
+                        dispatch(layoutAc.changeRightBarRef(ref))
+                    }, */
         changeRightBarShow(bool) {
             dispatch(layoutAc.changeRightBarShow(bool))
         }
@@ -200,8 +188,8 @@ RightBar.propTypes = {
     themeName: PropTypes.string,
     headerHeight: PropTypes.string,
     footerHeight: PropTypes.string,
-    currentIndex: PropTypes.number,
-    playlist_imm: PropTypes.object,
+    list_imm: PropTypes.object,
+    currentSongId: PropTypes.number,
     el: PropTypes.object,
     changePlayIndex: PropTypes.func,
     changeRightBarRef: PropTypes.func,

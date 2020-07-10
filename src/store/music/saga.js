@@ -3,20 +3,16 @@ import types from './types'
 import { assist } from './actionsCreator'
 import { fromJS } from 'immutable'
 import { Song } from 'http'
-import { randomIndex } from './reducer'
+import { _randomIndex, _modesLen, _modes } from './reducer'
 import { randomArr } from 'tools'
 import { splitSongsId, addSourceProerty, unifySongsProperty } from 'tools/media'
 const song = new Song()
 
 export default function* () {
-    // yield takeEvery(types.SAGA_URL, getUrl)
     yield takeEvery(types.SAGA_LIST, changeList)
     yield takeEvery(types.SAGA_ADD_SONGS, addSongs)
+    yield takeEvery(types.SAGA_CHANGE_MODE, changeMode)
 }
-// function* getUrl({ value: id }) {
-//     const { data: [{ url = null }] } = yield song.getUrl(id)
-//     yield put(assist.updateUrls(id, url))
-// }
 function* changeList({ value: list }) {
     yield new Promise(resolve => setTimeout(resolve, 100))    /* 推迟执行，为了拿到最新的index */
     yield put(assist.changeList(list))
@@ -27,19 +23,18 @@ function* changeList({ value: list }) {
         index = music.get('index')
 
     yield* changeRandomList_(list, [index])
-    const newPlaylist = modeIndex === randomIndex
+    const newPlaylist = modeIndex === _randomIndex
         ? yield select(state => state.getIn(['music', 'randomList']))
         : list_imm
     yield put(assist.changePlaylist(newPlaylist))
 }
-
 function* addSongs({ value: [ids, source] }) {
     const
         music = yield select(state => state.get('music')),
         currentIndex = music.get('index'),
         list = music.get('list'),
         randomList = music.get('randomList'),
-        isRandom = music.getIn(['mode', 'index']) === randomIndex
+        isRandom = music.getIn(['mode', 'index']) === _randomIndex
 
     let newList = null, newRandomList = null
 
@@ -84,6 +79,22 @@ function* addSongs({ value: [ids, source] }) {
     yield put(assist.changeIndex(0))
     yield put(assist.togglePlaying(true))
 }
+function* changeMode() {
+    const
+        music = yield select(state => state.get('music')),
+        currentSongId = music.getIn(['currentSong', 'id']),
+        oldModeIndex = music.getIn(['mode', 'index']),
+        newModeIndex = oldModeIndex + 1 === _modesLen ? 0 : oldModeIndex + 1,
+        isRandom = newModeIndex === _randomIndex
+
+    yield put(assist.changeMode(_modes[newModeIndex]))
+
+    /* 从随机播放到不随机， 从不随机到随机 */
+    if (oldModeIndex === _randomIndex || isRandom) {
+        const newPlaylist = isRandom ? music.get('randomList') : music.get('list')
+        yield put(assist.changePlaylist(newPlaylist))
+    }
+}
 
 
 /* 下划线表示不被takeEvery()捕捉 */
@@ -92,5 +103,3 @@ function* changeRandomList_(list, heads) {
     yield put(assist.changeRandomList(arr))
     return arr
 }
-
-

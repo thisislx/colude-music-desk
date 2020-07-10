@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { memo, useEffect, useState, useRef, useCallback } from 'react'
-import { loopIndex, getBaseUrl } from './config'
+import { _loopIndex, getBaseUrl_ } from './config'
 import { connect } from 'react-redux'
 import { actionsCreator } from 'store/music'
 import { throttle } from 'tools'
@@ -60,8 +60,8 @@ function Music(props) {
         <audio
             ref={audioRef}
             autoPlay={playing}
-            loop={modeIndex === loopIndex}
-            src={getBaseUrl(currentId)}
+            loop={modeIndex === _loopIndex}
+            src={getBaseUrl_(currentId)}
             onDurationChange={durationChangeHandle}
             onTimeUpdate={timeUpdateHandle}
             onWaiting={e => toggleLoading(true)}
@@ -83,7 +83,6 @@ const
             percent = music.get('percent'),
             volume = music.get('volume'),
             currentId = music.getIn(['currentSong', 'id'])
-        /* urls_imm = music.get('urls') */
 
         return {
             index,
@@ -92,8 +91,6 @@ const
             percent,
             volume,
             currentId,
-
-            /* urls_imm, */
         }
     },
     mapDispatch = dispatch => ({

@@ -39,7 +39,7 @@ const config = {
     plugins: [
         new MiniCssExtranctPlugin({
             filename: 'assets/css/[name].css',
-            chunkFilename: 'assets/css/[name]_chunk.css'
+            chunkFilename: 'assets/css/[name]_async.css'
         }),
         new CleanPlugin(),
     ],
@@ -67,7 +67,7 @@ const config = {
             name: true,
             cacheGroups: {
                 vendors: {
-                    filename: 'js/[name].js',
+                   // filename: 'js/vendors.js',
                     test: /[\\/]node_modules[\\/]/,
                     priority: -10,
                 },

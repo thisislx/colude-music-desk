@@ -12,7 +12,7 @@ function CommonBtn(props) {
         <button
             className={
                 className ? className
-                    : `${styles.wrap} ${theme.border_v1} ${theme.fontColor_v2} pointer`
+                    : `${styles.wrap} ${theme.back_v1} ${theme.border_v1} ${theme.fontColor_v2} pointer`
             }
             onClick={onClick ? onClick : null}
         >

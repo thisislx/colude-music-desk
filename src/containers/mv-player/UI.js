@@ -2,9 +2,8 @@ import React, { useEffect, useState, useRef, useCallback } from 'react'
 import styles from './style'
 import { _commentLimit, _mvCoverSize, _replyCommentConfig, _makeCommentConfig } from './config'
 import PropTypes from 'prop-types'
-import { computeClockMin } from 'tools/media'
-import { convertHugeNum } from 'tools'
 import _icons from 'config/icons'
+import { convertHugeNum } from 'tools'
 
 import Video from '../video'
 import Pagination from 'base-ui/pagination'
@@ -130,7 +129,12 @@ function UI(props) {
                         }
                     </ol>
                 </section>
-                <MvRelate onClick={toggleMv} list={relateMv} description={mvData.description}/>
+                <MvRelate
+                    theme={theme}
+                    onClick={toggleMv}
+                    list={relateMv}
+                    description={mvData.description}
+                />
             </section>
         </OpcityWrap>
     )

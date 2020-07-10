@@ -2,10 +2,12 @@ import React, { memo, useCallback } from 'react'
 import styles from './style'
 import PropTypes from 'prop-types'
 import { _mvCoverSize } from '../config'
+import { computeClockMin } from 'tools/media'
+import { convertHugeNum } from 'tools'
 
 function MvRelate(props) {
     const
-        { list, onClick, description } = props,
+        { list, onClick, description, theme } = props,
         proxyHandle = useCallback(e => {
             const
                 el = e.target,
@@ -76,6 +78,7 @@ MvRelate.propTypes = {
     list: PropTypes.array,
     onClick: PropTypes.func,
     description: PropTypes.string,
+    theme: PropTypes.object,
 }
 
 export default memo(MvRelate)

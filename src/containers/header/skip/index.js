@@ -22,7 +22,8 @@ function Skip(props) {
         if (show) listener()
         else cancelListener()
         return () => cancelListener()
-    }, [show])
+    }, [show, listener, cancelListener])
+    
     return (
         <>
             <span

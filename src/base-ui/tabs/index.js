@@ -40,7 +40,7 @@ function Tabs(props) {
             className={styles.wrap}
         >
             <ol
-                className={`${styles.tabs} ${theme.border_v1} ${theme.fontColor_v1}`}
+                className={`${styles.tabs} ${theme.fontColor_v3} ${theme.border_v1} `}
                 onClick={toggleActive}
                 style={{ height: height + 'rem' }}
                 ref={tabsRef}

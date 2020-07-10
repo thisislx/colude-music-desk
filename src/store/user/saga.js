@@ -1,9 +1,12 @@
 import { put, takeEvery, select } from 'redux-saga/effects'
 import types from './types'
 import { assist } from './actionsCreator'
-import { actionsCreator as globalAC } from '../global'
 import { User } from 'http'
-const user = new User()
+import Messager from 'tools/Messager'
+
+const
+    user = new User(),
+    _messager = new Messager(2001100)
 
 export default function* () {
     yield takeEvery(types.SAGA_IS_LOGIN, getIsLogin)
@@ -40,16 +43,16 @@ function* emailLogin({ value: { email, password } }) {
     } else 1// yield put(assist.changeToast(res.msg, 'err'))
 }
 function* logout() {
-    const res = yield user.logout()
+    yield user.logout()
     yield put(assist.init())
 }
 function* signIn() {
     try {
         const resArr = yield user.signIn()
-        // yield put(assist.changeToast(`经验+ ${resArr.reduce((prev, cur) => prev + cur.point, 0)}`))
+        _messager.push(`积分+ ${resArr.reduce((prev, cur) => prev + cur.point, 0)}`)
         yield put(assist.changeSignInState())
     } catch (err) {
-        // yield put(assist.changeToast('签到失败', 'err'))
+        _messager.pushErr('签到失败')
     }
 }
 function* getMyDetail({ value: uid }) {
@@ -64,12 +67,12 @@ function* toggleFollowUser({ value: [uid, followed] }) {
     try {
         yield user.toggleFollowUser(uid, followed)
     } catch (e) {
-        yield put(globalAC.showToast(followed ? '取消失败' : '关注失败', 'err'))
+        _messager.pushErr(followed ? '取消失败' : '关注失败')
     }
     const otherUser = yield select(state => state.getIn(['user', 'otherUser']))
     if (otherUser.getIn(['profile', 'userId']) == uid)
         yield put(assist.changeOtherUser(
             otherUser.setIn(['profile', 'followed'], !followed)
         ))
-    yield put(globalAC.showToast(followed ? '取消关注' : '已关注', 'true'))
+    _messager.push(followed ? '取消关注' : '已关注')
 }

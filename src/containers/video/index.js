@@ -10,14 +10,13 @@ import { _toFullScreen, _exitFullScreen, _isFullScreen } from 'tools/dom'
 import { connect } from 'react-redux'
 import { actionsCreator as mvAC } from 'store/mv'
 import { actionsCreator as musicAC } from 'store/music'
-import useTheme from 'hooks/useTheme'
 
 import Barrage from 'components/barrage'
 import Progress from 'base-ui/progress'
 
 function Video(props) {
     const
-        { themeName, url, height } = props,
+        {  url, height } = props,
         { getUrl, pauseMusic } = props,
         { data_imm, barrage_imm } = props,
         data = useMemo(() => data_imm.toJS(), [data_imm]),
@@ -32,7 +31,6 @@ function Video(props) {
         [isFull, setIsFull] = useState(false),      /* 处于全屏 */
         [showBar, setShowBar] = useState(false),
         [showBarrage, setShowBarrage] = useState(true),
-        theme = useTheme(themeName),
         currentSecond = duration * percent,
         wrapRef = useRef(null),
         videoRef = useRef(null),
@@ -103,7 +101,6 @@ function Video(props) {
 
     /* 请求url */
     useEffect(() => {
-        console.log(id)
         getUrl(id)
     }, [id, getUrl])
 
@@ -131,11 +128,9 @@ function Video(props) {
     }, [playing, pauseMusic])
 
     return (
-        <div className={`${styles.wrap} ${theme.back_v4}`} ref={wrapRef} >
+        <div className={`${styles.wrap}`} ref={wrapRef} >
             <header
-                className={`${theme.fontColor_r2} `
-                    + (showBar ? '' : styles.hide)
-                }
+                className={showBar ? '' : styles.hide}
             >
                 <h2>{data.name}</h2>
             </header>
@@ -175,15 +170,15 @@ function Video(props) {
                     buffer={buffer}
                 />
 
-                <section className={`${styles.controls} ${theme.back_v3} ${theme.fontColor_r3}`}>
+                <section className={`${styles.controls}`}>
                     <section>
                         <span
                             onClick={e => setPlaying(!playing)}
-                            className={`${_mediaIcons.control.className} ${theme.textHover_r2}`}
+                            className={`${_mediaIcons.control.className}`}
                             dangerouslySetInnerHTML={{ __html: _mediaIcons.control.icon(playing) }}
                         >
                         </span>
-                        <span className={`${styles.playTime} ${theme.textHover_r2}`}>
+                        <span className={`${styles.playTime}`}>
                             {computeClockMin(currentSecond * 1000)} / {computeClockMin(duration * 1000)}
                         </span>
                     </section>
@@ -195,7 +190,7 @@ function Video(props) {
                         <span
                             onClick={fullVideoHanle}
                             dangerouslySetInnerHTML={{ __html: _icons.full.icon }}
-                            className={`${_icons.full.className} ${theme.textHover_r2}`}
+                            className={`${_icons.full.className}`}
                         ></span>
                     </section>
                 </section>
@@ -207,7 +202,6 @@ function Video(props) {
 Video.propTypes = {
     height: PropTypes.number,   /* 外部传入(视频高度) @default(css样式表)*/
 
-    themeName: PropTypes.string,
     url: PropTypes.string,
     getUrl: PropTypes.func,
     pauseMusic: PropTypes.func,
@@ -218,14 +212,12 @@ Video.propTypes = {
 const
     mapState = state => {
         const
-            themeName = state.getIn(['theme', 'name']),
             mv = state.get('mv'),
             url = mv.get('currentUrl'),
             data_imm = mv.get('data'),
             barrage_imm = mv.get('barrage')
 
         return {
-            themeName,
             url,
             data_imm,
             barrage_imm,

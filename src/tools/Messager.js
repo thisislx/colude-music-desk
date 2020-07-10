@@ -1,18 +1,14 @@
 import { actionsCreator as globalAc } from 'store/global'
 import store from 'store'
 
-let dispatch = null,
-    single = null
+let dispatch = null
 setTimeout(() => {
     dispatch = store.dispatch
 })
-
+const _list = new Map()
 export default class {
     constructor(ms = 1500) {
-        /* ms不同 */
-        if (single) return Object.assign(Object.create(single.__proto__), single, ms)
         this.ms = ms
-        this.list = []
         this.stop = false
         this.handing = false        /* 正在处理 */
     }
@@ -27,8 +23,8 @@ export default class {
     }
 
     push(text, ms, icon) {
-        const { list, stop, handing } = this
-        list.push([text, ms, icon])
+        const { stop, handing } = this
+        if (!_list.has(text)) _list.set(text, [text, ms, icon])
         if (!stop && !handing) this.listener()
     }
 
@@ -37,19 +33,20 @@ export default class {
     }
 
     clean() {
-        this.list.splice(0)
+        _list.clear()
     }
 
     listener() {
-        const
-            { list, ms } = this,
+        const { ms } = this,
             handle = () => {
-                if (!list.length || this.stop) this.handing = false
+                if (!_list.size || this.stop) this.handing = false
                 else {
                     const
-                        cur = list.shift(),
-                        _ms = Number.isInteger(cur[1]) ? cur[1] : ms
-                    dispatch(globalAc.showToast(cur[0], cur[2], _ms))
+                        first = [..._list.keys()][0],
+                        firstValue = _list.get(first),
+                        _ms = Number.isInteger(firstValue[1]) ? firstValue[1] : ms
+                    dispatch(globalAc.showToast(firstValue[0], firstValue[2], _ms))
+                    _list.delete(first)
                     setTimeout(handle, _ms)
                 }
             }
