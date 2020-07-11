@@ -1,6 +1,7 @@
 import { takeEvery, put, select } from 'redux-saga/effects'
 import types from './types'
 import { assist } from './actionsCreator'
+import { actionsCreator as musicAc } from '../music'
 import { Mv } from 'http'
 import { _isMvId, uniformData_ } from './tool'
 const _mv = new Mv()
@@ -10,8 +11,15 @@ export default function* () {
     yield takeEvery(types.SAGA_GET_URL, getUrl)
     yield takeEvery(types.SAGA_GET_COMMENT, getComment)
     yield takeEvery(types.SAGA_GET_RELATE_MV, getRelateMv)
+    yield takeEvery(types.TOGGLE_PLAYING, togglePlaying)
 }
 
+function* togglePlaying({ value }) {
+    const bool = value !== undefined
+        ? value
+        : yield select(state => state.getIn(['video', 'playing']))
+    if (bool) yield put(musicAc.togglePlaying(false))
+}
 function* getData({ value: id }) {
     yield put(assist.init())
     if (_isMvId(id)) yield* getMvData_(id)
@@ -68,7 +76,7 @@ function* getVideoComment_(id, offset, limit) {
 /* ---分割线--- */
 function* _getCommentLastTime_(offset) {
     const
-        __comments = (yield select(state => state.getIn(['mv', 'comments']))).toJS(),
+        __comments = (yield select(state => state.getIn(['video', 'comments']))).toJS(),
         __lastPage = offset === 0 ? 0 : Reflect.has(__comments, offset - 1) ? offset - 1 : (() => {
             const keys = Object.keys(__comments)
             return keys[keys.lenght - 1]

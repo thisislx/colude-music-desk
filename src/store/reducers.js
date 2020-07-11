@@ -8,7 +8,7 @@ import { reducer as song } from './song'
 import { reducer as global } from './global'
 import { reducer as search } from './search'
 import { reducer as banner } from './banner'
-import { reducer as mv } from './mv'
+import { reducer as video } from './video'
 import { reducer as layout } from './layout'
 
 export default combineReducers({
@@ -20,6 +20,6 @@ export default combineReducers({
     songMenu,
     song,
     search,
-    mv,
+    video,
     layout,
 })

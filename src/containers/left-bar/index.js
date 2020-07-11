@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { memo, useMemo, useEffect, useState, useCallback, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import styles from './style'
 import { _songMenuConfig, _likeMenuIndex, _wrapMaxWidth } from './config'
 import { connect } from 'react-redux'
@@ -7,7 +8,7 @@ import { actionsCreator as songMenuAc } from 'store/song-menu'
 import { actionsCreator as layoutAc } from 'store/layout'
 import useTheme from 'hooks/useTheme'
 import useDomMove from 'hooks/useDomMove'
-import { withRouter, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import _paths from 'config/paths'
 import Collapse from 'base-ui/collapse'
 import MusicData from './music-data'
@@ -75,7 +76,7 @@ function LeftBar(props) {
             `top: ${headerHeight};bottom: ${footerHeight};`
     }, [headerHeight, footerHeight])
 
-    return (
+    return createPortal(
         <div
             className={`${styles.wrap} ${styles.enterAmt} ${theme.border_v1} ${theme.back_r2}`}
             ref={wrapRef}
@@ -113,7 +114,7 @@ function LeftBar(props) {
                         onClickImg={entryPlayer}
                     /> : null
             }
-        </div>
+        </div>, app
     )
 }
 const
@@ -155,4 +156,4 @@ const
     })
 
 
-export default withRouter(connect(mapState, mapDispatch)(memo(LeftBar)))
+export default connect(mapState, mapDispatch)(memo(LeftBar))

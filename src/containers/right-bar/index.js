@@ -1,4 +1,5 @@
 import React, { memo, useRef, useEffect, useCallback, useMemo, createRef } from 'react'
+import { createPortal } from 'react-dom'
 import styles from './style'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
@@ -79,7 +80,7 @@ function RightBar(props) {
         }
     }, [currentIndex, songLines])
 
-    return (
+    return createPortal(
         <div
             className={`${styles.wrap} ${theme.back_r2} ${theme.fontColor_v2}`}
             ref={wrapRef}
@@ -113,7 +114,7 @@ function RightBar(props) {
                                 <li
                                     ref={el}
                                     key={song.id}
-                                    className={`${styles.songItem}  ${theme.backHover_v1} ${currentIndex === index ? `${theme.back_v1} ${theme.color}`  : ''} `}
+                                    className={`${styles.songItem}  ${theme.backHover_v1} ${currentIndex === index ? `${theme.back_v1} ${theme.color}` : ''} `}
                                 >
                                     <section
                                         data-index={index}
@@ -147,7 +148,7 @@ function RightBar(props) {
                     })
                 }
             </ol>
-        </div >
+        </div>, app
     )
 }
 

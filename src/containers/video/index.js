@@ -5,24 +5,21 @@ import { _fullShowBarTime } from './config'
 import _icons, { _mediaIcons } from 'config/icons'
 import { computeClockMin } from 'tools/media'
 import { debounce, throttle } from 'tools'
-
 import { _toFullScreen, _exitFullScreen, _isFullScreen } from 'tools/dom'
 import { connect } from 'react-redux'
-import { actionsCreator as mvAC } from 'store/mv'
-import { actionsCreator as musicAC } from 'store/music'
+import { actionsCreator as videoAC } from 'store/video'
 
 import Barrage from 'components/barrage'
 import Progress from 'base-ui/progress'
 
 function Video(props) {
     const
-        {  url, height } = props,
-        { getUrl, pauseMusic } = props,
+        { url, height, playing } = props,
+        { getUrl, togglePlaying } = props,
         { data_imm, barrage_imm } = props,
         data = useMemo(() => data_imm.toJS(), [data_imm]),
         barrage = useMemo(() => barrage_imm.toJS(), [barrage_imm]),
         { id } = data,
-        [playing, setPlaying] = useState(false),    /* 首次加载不播放 */
         [percent, setPercent] = useState(0),    /* 进度 */
         [volume, setVolume] = useState(1),
         [loading, setLoading] = useState(true),
@@ -34,7 +31,6 @@ function Video(props) {
         currentSecond = duration * percent,
         wrapRef = useRef(null),
         videoRef = useRef(null),
-        isInit = useRef(true),                          /* 判断是否首次加载 */
         localPercentChange = useRef(false),             /* 视频自然播放 */
         tiemUpdateHandle = useCallback(throttle(e => {
             if (duration) {
@@ -52,11 +48,11 @@ function Video(props) {
             const el = e.target
             setDuration(el.duration)
             setLoading(false)
-            if (!isInit.current && playing) el.play()
-        }, [isInit, playing]),
-        clickVideoHandle = useCallback(e => {
-            setPlaying(!playing)
+            playing && el.play()
         }, [playing]),
+        togglePlayingHandle = useCallback(e => {
+            togglePlaying()
+        }, [togglePlaying]),
         contextMenuVideoHandle = useCallback(e => {
             // e.preventDefault()
             // e.stopPropagation()
@@ -109,11 +105,7 @@ function Video(props) {
         setBuffer(0)
         setLoading(true)
         setPercent(0)
-
-        /* 初始化不自动播放 */
-        if (!isInit.current) setPlaying(true)
-        else isInit.current = false
-    }, [isInit, id])
+    }, [id])
 
     /* 全屏隐藏显式bar */
     useEffect(() => {
@@ -122,10 +114,6 @@ function Video(props) {
         else window.removeEventListener('mousemove', fullBarHandle)
         return () => window.removeEventListener('mousemove', fullBarHandle)
     }, [isFull, fullBarHandle])
-
-    useEffect(() => {
-        if (playing) pauseMusic()
-    }, [playing, pauseMusic])
 
     return (
         <div className={`${styles.wrap}`} ref={wrapRef} >
@@ -136,7 +124,7 @@ function Video(props) {
             </header>
             <main
                 className={styles.videoWrap}
-                onClick={clickVideoHandle}
+                onClick={togglePlayingHandle}
                 onContextMenu={contextMenuVideoHandle}
             >
                 <video
@@ -159,7 +147,6 @@ function Video(props) {
                 }
             </main>
 
-
             <footer
                 className={showBar ? '' : styles.hide}
             >
@@ -173,7 +160,7 @@ function Video(props) {
                 <section className={`${styles.controls}`}>
                     <section>
                         <span
-                            onClick={e => setPlaying(!playing)}
+                            onClick={togglePlayingHandle}
                             className={`${_mediaIcons.control.className}`}
                             dangerouslySetInnerHTML={{ __html: _mediaIcons.control.icon(playing) }}
                         >
@@ -202,9 +189,10 @@ function Video(props) {
 Video.propTypes = {
     height: PropTypes.number,   /* 外部传入(视频高度) @default(css样式表)*/
 
+    playing: PropTypes.bool,
     url: PropTypes.string,
     getUrl: PropTypes.func,
-    pauseMusic: PropTypes.func,
+    togglePlaying: PropTypes.func,
     data_imm: PropTypes.object,
     barrage_imm: PropTypes.object,
 }
@@ -212,24 +200,26 @@ Video.propTypes = {
 const
     mapState = state => {
         const
-            mv = state.get('mv'),
-            url = mv.get('currentUrl'),
-            data_imm = mv.get('data'),
-            barrage_imm = mv.get('barrage')
+            video = state.get('video'),
+            playing = video.get('playing'),
+            url = video.get('currentUrl'),
+            data_imm = video.get('data'),
+            barrage_imm = video.get('barrage')
 
         return {
+            playing,
             url,
             data_imm,
             barrage_imm,
         }
     },
     mapDispatch = dispatch => ({
-        getUrl(mvid) {
-            dispatch(mvAC.getUrl(mvid))
+        togglePlaying(bool) {
+            return dispatch(videoAC.togglePlaying(bool))
         },
-        pauseMusic() {
-            dispatch(musicAC.togglePlaying(false))
-        },
+        getUrl(id) {
+            dispatch(videoAC.getUrl(id))
+        }
     })
 
 export default connect(mapState, mapDispatch)(memo(Video))

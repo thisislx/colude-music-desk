@@ -2,6 +2,7 @@ import { put, takeEvery, select } from 'redux-saga/effects'
 import types from './types'
 import { assist } from './actionsCreator'
 import { fromJS } from 'immutable'
+import { actionsCreator as videoAc } from '../video'
 import { Song } from 'http'
 import { _randomIndex, _modesLen, _modes } from './reducer'
 import { randomArr } from 'tools'
@@ -12,6 +13,14 @@ export default function* () {
     yield takeEvery(types.SAGA_LIST, changeList)
     yield takeEvery(types.SAGA_ADD_SONGS, addSongs)
     yield takeEvery(types.SAGA_CHANGE_MODE, changeMode)
+    yield takeEvery(types.TOGGLE_PLAYING, togglePlaying)
+}
+
+function* togglePlaying({ value }) {
+    const bool = value !== undefined
+        ? value
+        : yield select(state => state.getIn(['video', 'playing']))
+    if (bool) yield put(videoAc.togglePlaying(false))
 }
 function* changeList({ value: list }) {
     yield new Promise(resolve => setTimeout(resolve, 100))    /* 推迟执行，为了拿到最新的index */

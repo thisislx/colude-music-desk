@@ -2,13 +2,6 @@ import types from './types'
 import { fromJS } from 'immutable'
 
 const sagas = {
-    // getUrl(id) {
-    //     return {
-    //         type: types.SAGA_URL,
-    //         value: id
-    //     }
-    // },
-
     changeList(list) {
         return {
             type: types.SAGA_LIST,

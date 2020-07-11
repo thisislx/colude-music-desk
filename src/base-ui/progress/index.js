@@ -54,7 +54,7 @@ function Progress(props) {
             const
                 { width } = wrapPos.current,
                 val = Math.max(0, Math.min(1, percentElWidth / width))
-                console.log(percentElWidth, width)
+             //   console.log(percentElWidth, width)
             setPercent(val)
         }
     }, [percentElWidth, wrapPos])

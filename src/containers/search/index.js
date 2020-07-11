@@ -5,7 +5,6 @@ import { _requestLimit, _typesConfig, _defaultType, _typeKeys, _layout, createSo
 import { connect } from 'react-redux'
 import { actionsCreator as searchAc } from 'store/search'
 import { actionsCreator as musicAc } from 'store/music'
-import { actionsCreator as mvAc } from 'store/mv'
 import { getProperty } from 'tools'
 import Pagination from 'base-ui/pagination'
 import Tabs, { TabItem } from 'base-ui/tabs'

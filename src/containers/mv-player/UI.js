@@ -13,12 +13,12 @@ import MvRelate from './mv-relate'
 
 function UI(props) {
     const
-        { mvData, theme, comments, briefHotComments, commentsOffset, relateMv } = props,
+        { data, theme, comments, briefHotComments, commentsOffset, relateMv } = props,
         { setCommentsOffset, toggleMv } = props,
         [show, setShow] = useState(true),
         [commentInputConfig, setCommentInputConfig] = useState({ show: false }),
-        artists = mvData.artists,
-        videoGroup = mvData.videoGroup,
+        artists = data.artists,
+        videoGroup = data.videoGroup,
         commentTotal = comments.length ? comments[0].total : 0,
         commentRef = useRef(null),
         lockCommentScroll = useRef(true),
@@ -32,7 +32,7 @@ function UI(props) {
     /* mv-data变化初始化 , 先锁住*/
     useEffect(() => {
         lockCommentScroll.current = true
-    }, [mvData, lockCommentScroll])
+    }, [data, lockCommentScroll])
 
     /* 评论页改变滚动条跳跃 */
     useEffect(() => {
@@ -54,7 +54,7 @@ function UI(props) {
                         dangerouslySetInnerHTML={{ __html: _icons.left.icon }}
                         className={`${_icons.left.className} ${theme.fontColor_v1} ${theme.textHover_v1}`}
                     ></span>
-                    <h2>{mvData.name}</h2>
+                    <h2>{data.name}</h2>
                     <ol onClick={e => console.log(e.target)}>
                         {
                             artists.map((item, index) => (
@@ -102,10 +102,10 @@ function UI(props) {
                 </header>
                 <section className={`${styles.relateData} ${theme.fontColor_v1}`}>
                     <header >
-                        <span>发布时间：{mvData.publishTime}</span>
-                        <span>播放次数：{convertHugeNum(mvData.playCount)}</span>
+                        <span>发布时间：{data.publishTime}</span>
+                        <span>播放次数：{convertHugeNum(data.playCount)}</span>
                     </header>
-                    <div>{mvData.briefDesc}</div>
+                    <div>{data.briefDesc}</div>
                     <ol
                         className={styles.tags}
                         onClick={e => console.log(e.target)}
@@ -133,7 +133,7 @@ function UI(props) {
                     theme={theme}
                     onClick={toggleMv}
                     list={relateMv}
-                    description={mvData.description}
+                    description={data.description}
                 />
             </section>
         </OpcityWrap>
@@ -143,7 +143,7 @@ function UI(props) {
 UI.propTypes = {
     commentsOffset: PropTypes.number,
     theme: PropTypes.object,
-    mvData: PropTypes.object,
+    data: PropTypes.object,
     comments: PropTypes.array,
     briefHotComments: PropTypes.array,
     relateMv: PropTypes.array,

@@ -42,7 +42,6 @@ export default (state = _initState_imm, { type, value }) => {
                 buffer: 0,
                 currentSong: state.getIn(['playlist', value]) || _initState_imm.get('currentSong')
             }))
-            console.log(state.get('playlist').toJS())
             ls.set(newState)
             return newState
         }

@@ -1,4 +1,5 @@
 import React, { memo, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import styles from './style.less'
 import PropTypes from 'prop-types'
 import useTheme from 'hooks/useTheme'
@@ -26,18 +27,25 @@ function BaseWrap(props) {
     useEffect(() => {
         if (fixed) {
             wrapRef.current.style.cssText +=
-                `top: ${top}; bottom: ${bottom}; position: fixed; overflow-y: auto; z-index:4;`
+                `top: ${top}; bottom: ${bottom}; position: fixed; overflow-y: auto; z-index:3;`
         }
     }, [fixed, top, bottom, wrapRef])
 
-    return (
-        <div
+    return fixed
+        ? createPortal(
+            <div
+                ref={wrapRef}
+                className={`${styles.wrap} ${theme.back_r3} ${theme.fontColor_v2} ${className}`}
+            >
+                {children}
+            </div>, app
+        )
+        : <div
             ref={wrapRef}
             className={`${styles.wrap} ${theme.back_r3} ${theme.fontColor_v2} ${className}`}
         >
             {children}
         </div>
-    )
 }
 
 BaseWrap.propTypes = {

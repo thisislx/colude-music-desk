@@ -2,6 +2,7 @@ import types from './types'
 import { fromJS } from 'immutable'
 
 const initState = {
+    playing: false,
     data: {},
     currentUrl: '',
     comments: {
@@ -16,6 +17,9 @@ const initState_imm = fromJS(initState)
 
 export default (state = initState_imm, { type, value }) => {
     switch (type) {
+        case types.TOGGLE_PLAYING:
+            return state.set('playing', value === undefined ? !state.get('playing') : value)
+
         case types.CHANGE_DATA:
             return state.set('data', value)
 

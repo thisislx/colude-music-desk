@@ -20,6 +20,12 @@ const
                 value: fromJS(data)
             }
         },
+        togglePlaying(bool) {
+            return {
+                type: types.TOGGLE_PLAYING,
+                value: bool
+            }
+        }
     },
     sagas = {
         getData(mvid) {

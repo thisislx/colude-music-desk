@@ -5,7 +5,7 @@ import { saga as song } from './song'
 import { saga as global } from './global'
 import { saga as search } from './search'
 import { saga as banner } from './banner'
-import { saga as mv } from './mv'
+import { saga as video } from './video'
 
 export default function* () {
     yield* global()
@@ -15,5 +15,5 @@ export default function* () {
     yield* song()
     yield* search()
     yield* banner()
-    yield* mv()
+    yield* video()
 }

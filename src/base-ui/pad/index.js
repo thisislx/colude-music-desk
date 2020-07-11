@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { memo, useMemo, useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import PropTypes from 'prop-types'
 import styles from './style'
 import { connect } from 'react-redux'
@@ -47,7 +48,7 @@ function Pad(props) {
         if (el) el.current = wrapRef.current
     }, [el, wrapRef])
 
-    return (
+    return  createPortal(
         <div
             className={className}
             style={style}
@@ -64,7 +65,7 @@ function Pad(props) {
                     >
                     </div> : null
             }
-        </div >
+        </div>, app
     )
 }
 
