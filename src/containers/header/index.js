@@ -1,12 +1,11 @@
 /* eslint-disable react/prop-types */
-import React, { memo, useCallback } from 'react'
+import React, { memo, useCallback, useRef, useEffect } from 'react'
 import styles from './style'
 import useTheme from 'hooks/useTheme'
 import { connect } from 'react-redux'
 import { actionsCreator as themeActionsCreator } from 'store/theme'
 import { useHistory } from 'react-router-dom'
 import _icons from 'config/icons'
-import _layout from 'config/layout'
 
 import Search from './search'
 import BtnControl from './btn-control'
@@ -15,17 +14,22 @@ import User from './user'
 
 function Header(props) {
     const
-        { themeName, changeTheme } = props,
+        { themeName, changeTheme, height } = props,
         history = useHistory(),
+        wrapRef = useRef(null),
         theme = useTheme(themeName),
         clickLogoHandle = useCallback(e => {
             history && history.push('/')
         }, [history])
 
+    useEffect(() => {
+        wrapRef.current.style.height = height
+    }, [wrapRef, height])
+
     return (
         <header
-            className={`${theme}  ${styles.wrap}`}
-            style={{ height: _layout.headerHeight }}
+            className={`${theme} ${styles.wrap}`}
+            ref={wrapRef}
         >
             <section className={styles.left}>
                 <aside
@@ -47,9 +51,11 @@ function Header(props) {
 const
     mapState = state => {
         const
-            themeName = state.getIn(['theme', 'name'])
+            themeName = state.getIn(['theme', 'name']),
+            height = state.getIn(['layout', 'header', 'height'])
         return {
-            themeName
+            themeName,
+            height,
         }
     },
     mapDispath = dispatch => ({

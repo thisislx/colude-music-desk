@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import useTheme from 'hooks/useTheme'
 
+/* 歌单列表， 如首页看到的一系列歌单 */
 function SongMenu(props) {
     const
         { children, themeName, onClick, title } = props,

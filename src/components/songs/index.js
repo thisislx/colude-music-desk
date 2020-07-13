@@ -6,6 +6,7 @@ import useTheme from 'hooks/useTheme'
 import { useHistory } from 'react-router-dom'
 import Item from './item'
 
+/* 打开歌单详情的歌曲列表 */
 function Songs(props) {
     const
         { list = [], onDoubleClick, themeName, currentId = -1 } = props,

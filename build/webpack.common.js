@@ -2,8 +2,7 @@ const
     paths = require('./webpack.path'),
     Happypack = require('happypack'),
     HtmlPlugin = require('html-webpack-plugin'),
-    WorkBoxPlugin = require('workbox-webpack-plugin')
-SizePlugin = require('size-plugin')
+    SizePlugin = require('size-plugin')
 
 const config = {
     entry: paths.entry,
@@ -105,10 +104,6 @@ const config = {
             favicon: './favicon.ico',
         }),
         new SizePlugin(),
-        new WorkBoxPlugin.GenerateSW({
-            clientsClaim: true,
-            skipWaiting: true,
-        })
     ]
 }
 
