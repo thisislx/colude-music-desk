@@ -15,16 +15,27 @@
 9. 用户提示(toast、loading)
 
 
+![首页](md-imgs/0.png)
+
+---
+
 ![首屏进入](md-imgs/1.gif)
+
 ---
+
 ![移动状态栏](md-imgs/2.gif)
+
 ---
+
 ![换肤](md-imgs/3.gif)
+
+
 ---
 
 ### 环境要求
 
 > node >= 12+环境
+
 ---
 
 ### 安装
@@ -63,4 +74,3 @@ devServer yarn dev
 
 1. 后续添加自定义外部变量采用_开头, 自定义外部函数采用_结尾, 部分除外(React、actionsCreator...)。
 2. 连接connect的container组件, 忽略eslint的propsType警告
-
