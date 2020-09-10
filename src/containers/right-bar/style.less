@@ -1,5 +1,5 @@
-@padding      : .6rem;
-@controlWidth : 1rem;
+@padding      : .7rem;
+@controlWidth : .8rem;
 @headerHeight : 2rem;
 @minWidth     : 550px;
 
@@ -13,7 +13,7 @@
     min-width                 : @controlWidth;
     transition-timing-function: ease-out;
     overflow-y                : auto;
-    overflow-x                : hidden;
+    overflow-x                : visible;
     z-index                   : 4;
 
     &::-webkit-scrollbar {
@@ -50,6 +50,7 @@
     padding  : (@padding + @headerHeight) @controlWidth @padding;
     font-size: .75rem;
     position : relative;
+    width    : 100%;
 
     >li {
         padding: .6rem 0;

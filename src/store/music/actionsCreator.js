@@ -2,10 +2,13 @@ import types from './types'
 import { fromJS } from 'immutable'
 
 const sagas = {
-    changeList(list) {
+    changeList(list, index) {
         return {
             type: types.SAGA_LIST,
-            value: list
+            value: {
+                list,
+                index
+            }
         }
     },
 
@@ -102,7 +105,7 @@ export const assist = {
     changePlaylist(list_imm) {
         return {
             type: types.CHANGE_PLAYLIST,
-            value: list_imm
+            value: fromJS(list_imm)
         }
     },
     changeRandomList(list) {

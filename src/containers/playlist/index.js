@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { memo, useMemo, useEffect, useRef, createContext } from 'react'
+import React, { memo, useMemo, useEffect, createContext, useState } from 'react'
 import styles from './style'
 import { connect } from 'react-redux'
 import { actionsCreator } from 'store/song-menu'
@@ -10,6 +10,7 @@ import { _recommendSongId } from 'config/song-menu'
 import Recommend from './recommend'      /* 每日歌曲推荐 */
 import Common from './common'
 import OpcityWrap from 'base-ui/fixed-wrap/opcity'
+import Mask from 'base-ui/mask'
 
 export const Context = createContext(null)
 
@@ -25,24 +26,23 @@ function Playlist(props) {
         { currentMenu_imm } = props,
         currentMenu = useMemo(() => currentMenu_imm.toJS(), [currentMenu_imm]),
         songs = currentMenu.songs,
+        [showMask, setShowMask] = useState(false),
         theme = useTheme(themeName),
-        [openLoading, cancleLoading] = useLoading(),
-        commendProps = useMemo(() => ({
+        [openLoading, cancelLoading] = useLoading(),
+        commendProps = {
             theme,
             songs: currentMenu.songs,
             currentSongId,  /* 当前播放歌曲的id */
-        }), [theme, currentSongId, currentMenu]),
-        firstOnPlay = useRef(false), /* 重复点击当前歌单 */
-        commendMethods = useMemo(() => ({
-            onPlay(index = 0) {    /* 播放歌曲   @index(歌曲索引) */
-                changePlayIndex(index)
-                if (!firstOnPlay.current) {
-                    songs.length ? changePlaylist(songs) : null
-                    firstOnPlay.current = true
-                }
+        },
+        commendMethods = {
+            onPlay(index) {    /* 播放歌曲   @index(歌曲索引) */
+                if (!songs.length) return
+                if (currentMenu.id === _lastId)
+                    changePlayIndex(index)
+                else changePlaylist(songs, index)
             },
             onCollect() { },
-        }), [songs, changePlayIndex, changePlaylist, firstOnPlay])
+        }
 
     /* 请求资源 */
     useEffect(() => {
@@ -52,17 +52,24 @@ function Playlist(props) {
 
     /* loading */
     useEffect(() => {
-        if (id !== _lastId || !songs || !songs.length) {
+        if (currentMenu.id != _lastId || _lastId != id) {
             _lastId = id
             openLoading()
-            firstOnPlay.current = false
-        } else cancleLoading()
-        return () => cancleLoading()
-    }, [id, currentMenu, openLoading, cancleLoading, firstOnPlay, songs])
+            setShowMask(true)
+        } else {
+            cancelLoading()
+            setShowMask(false)
+        }
+        return () => {
+            cancelLoading()
+            setShowMask(false)
+        }
+    }, [id, currentMenu, openLoading, cancelLoading])
 
     if (!songs.length) return <></>
     return (
         <OpcityWrap className={styles.wrap}>
+            <Mask show={showMask}></Mask>
             <Context.Provider value={{ ...commendProps, ...commendMethods }}>
                 {
                     currentMenu.id == _recommendSongId ?
@@ -101,8 +108,8 @@ const
         getCurrentMenu(id) {
             dispatch(actionsCreator.getCurrentMenu(id))
         },
-        changePlaylist(list) {
-            dispatch(musicActionsCreator.changeList(list))
+        changePlaylist(list, index) {
+            dispatch(musicActionsCreator.changeList(list, index))
         },
         changePlayIndex(index) {
             dispatch(musicActionsCreator.changeIndex(index))

@@ -11,6 +11,7 @@ import Tabs, { TabItem } from 'base-ui/tabs'
 import OpcityWrap from 'base-ui/fixed-wrap/opcity'
 import useTheme from 'hooks/useTheme'
 import _paths from 'config/paths'
+import useLoading from 'hooks/useLoading'
 
 function Search(props) {
     const
@@ -37,7 +38,8 @@ function Search(props) {
             enterMv(mvid) {
                 history.push(_paths.mvPlayer + mvid)
             }
-        }), [addSongs, words, type, history])
+        }), [addSongs, words, type, history]),
+        [openLoading, cancelLoading] = useLoading()
 
 
     if (!words) history.replace('/')
@@ -50,9 +52,11 @@ function Search(props) {
 
     /* 请求 */
     useEffect(() => {
-        if (!getProperty(result, [type, offset]))
+        if (!getProperty(result, [type, offset])) {
+            openLoading()
             getSearch(type, offset)
-    }, [type, offset, getSearch, result])
+        } else cancelLoading()
+    }, [type, offset, getSearch, result, openLoading, cancelLoading])
 
     return (
         <OpcityWrap className={styles.wrap} state={_layout}>

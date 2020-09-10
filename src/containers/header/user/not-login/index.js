@@ -10,7 +10,7 @@ function NotLogin(props) {
         { theme } = props,
         [show, setShow] = useState(false),
         [current, setCurrent] = useState(0),  // 登录方式
-        wrapRef = useRef(null),
+        padRef = useRef(null),
         inputAccountRef = useRef(null),
         inputPasswordRef = useRef(null),
         inputRefs = useMemo(() =>
@@ -23,25 +23,25 @@ function NotLogin(props) {
                 password = inputPasswordRef.current.value
             props[key](account, password)
         }, [current, inputAccountRef, inputPasswordRef]),
-        [listener, closeListner] = useClick((bool) => {
-            if (!bool) setShow(false)
-        }, [wrapRef])
+        [listener, closeListner] = useClick(bool => {
+            setShow(bool)
+        }, [padRef])
 
     useEffect(() => {
         if (show) listener()
         else closeListner()
         return () => closeListner()
     }, [show])
+
     return (
         <div
             className={`${styles.wrap} pointer`}
             onClick={e => setShow(true)}
-            ref={wrapRef}
         >
             <span className='iconfont'>&#xe62f;</span>
             <span className={styles.text}>未登录</span>
 
-            <Pad show={show} direction='center' width={26}>
+            <Pad show={show} direction='center' width={26} el={padRef}>
                 <form
                     className={`${styles.form} `}
                     onSubmit={loginHandle}

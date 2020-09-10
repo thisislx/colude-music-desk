@@ -1,12 +1,13 @@
 import { put, takeEvery, select } from 'redux-saga/effects'
 import types from './types'
-import { assist } from './actionsCreator'
+import actionsCreator, { assist } from './actionsCreator'
 import { fromJS } from 'immutable'
 import { actionsCreator as videoAc } from '../video'
 import { Song } from 'http'
 import { _randomIndex, _modesLen, _modes } from './reducer'
 import { randomArr } from 'tools'
 import { splitSongsId, addSourceProerty, unifySongsProperty } from 'tools/media'
+
 const song = new Song()
 
 export default function* () {
@@ -22,20 +23,17 @@ function* togglePlaying({ value }) {
         : yield select(state => state.getIn(['video', 'playing']))
     if (bool) yield put(videoAc.togglePlaying(false))
 }
-function* changeList({ value: list }) {
-    yield new Promise(resolve => setTimeout(resolve, 100))    /* 推迟执行，为了拿到最新的index */
-    yield put(assist.changeList(list))
-    const
-        music = yield select(state => state.get('music')),
-        modeIndex = music.getIn(['mode', 'index']),
-        list_imm = music.get('list'),
-        index = music.get('index')
+function* changeList({ value: { list, index = 0 } }) {
+    const modeIndex = yield select(state => state.getIn(['music', 'mode', 'index']))
 
-    yield* changeRandomList_(list, [index])
-    const newPlaylist = modeIndex === _randomIndex
-        ? yield select(state => state.getIn(['music', 'randomList']))
-        : list_imm
+    let newPlaylist = list
+    if (modeIndex === _randomIndex) {
+        newPlaylist = changeRandomList_(list, [index])
+        index = 0
+    }
+    yield put(assist.changeList(list))
     yield put(assist.changePlaylist(newPlaylist))
+    yield put(actionsCreator.changeIndex(index))
 }
 function* addSongs({ value: [ids, source] }) {
     const
@@ -91,7 +89,7 @@ function* addSongs({ value: [ids, source] }) {
 function* changeMode() {
     const
         music = yield select(state => state.get('music')),
-        currentSongId = music.getIn(['currentSong', 'id']),
+        // currentSongId = music.getIn(['currentSong', 'id']),
         oldModeIndex = music.getIn(['mode', 'index']),
         newModeIndex = oldModeIndex + 1 === _modesLen ? 0 : oldModeIndex + 1,
         isRandom = newModeIndex === _randomIndex

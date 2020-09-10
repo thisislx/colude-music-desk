@@ -8,7 +8,7 @@ export const initState = {
     },
     leftBar: {
         ref: Object.prototype,
-        width: '12rem',
+        width: '10rem',
     },
     footer: {
         height: '3.2rem',

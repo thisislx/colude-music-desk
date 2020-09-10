@@ -36,11 +36,11 @@ export default (state = _initState_imm, { type, value }) => {
     switch (type) {
         case types.CHANGE_IDNEX: {
             const newState = state.merge(fromJS({
-                index: value | 0,
+                index: value,
                 playing: true,
                 percent: 0,
                 buffer: 0,
-                currentSong: state.getIn(['playlist', value]) || _initState_imm.get('currentSong')
+                currentSong: state.getIn(['playlist', value]) || fromJS(_initState_imm.get('currentSong'))
             }))
             ls.set(newState)
             return newState

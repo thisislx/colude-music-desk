@@ -12,10 +12,10 @@ function Songs(props) {
         { list = [], onDoubleClick, themeName, currentId = -1 } = props,
         theme = useTheme(themeName),
         history = useHistory(),
-        doubleClickHandle = useCallback(e => {
+        doubleClickHandle = e => {
             const index = +e.target.getAttribute('data-index')
             if (Number.isInteger(index)) onDoubleClick && onDoubleClick(index)
-        }),
+        },
         proxyClickHandle = useCallback(e => {
             const attrs = Object.values(e.target.attributes)
             for (let i = 0, len = attrs.length; i < len; i++) {

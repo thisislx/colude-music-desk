@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import _icons from 'config/icons'
 import { convertHugeNum } from 'tools'
 
-import Video from '../video'
+import Video from '../../core/video'
 import Pagination from 'base-ui/pagination'
 import Comment, { CommentInput } from 'components/comment'
 import OpcityWrap from 'base-ui/fixed-wrap/opcity'

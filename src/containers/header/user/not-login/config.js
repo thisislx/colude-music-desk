@@ -1,7 +1,7 @@
 export const
     _loginWay = [
         {
-            name: '密码登录',
+            name: '手机登录',
             method: 'cellphoneLogin',   // actionsCreator[method]
             placehodlers: ['手机号码', '密码'],
             patterns: ['^1\\d{10}$', '^[\\s\\S]{6,}$'],   // input pattern属性

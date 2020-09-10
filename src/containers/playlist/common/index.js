@@ -15,9 +15,6 @@ function Common(props) {
         { songs, theme, currentSongId, data } = props,
         { onPlay, onCollect } = props,
         [isMoreDesc, setIsMoreDesc] = useState(false),
-        playHandle = useCallback(index => {
-            onPlay && onPlay(index)
-        }, [onPlay]),
         collectHandle = useCallback(() => {
 
         }, [onCollect])
@@ -52,7 +49,7 @@ function Common(props) {
                     </header>
 
                     <section className={styles.btns}>
-                        <PlayAllBtn onClick={playHandle} />
+                        <PlayAllBtn onClick={onPlay} />
                         <CommonBtn
                             icon={_icons.collect.icon}
                             name={_collectName}
@@ -95,7 +92,7 @@ function Common(props) {
                 </header>
                 <Songs
                     list={songs}
-                    onDoubleClick={index => playHandle(index)}
+                    onDoubleClick={onPlay}
                     currentId={currentSongId}
                 />
             </article>
