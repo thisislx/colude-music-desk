@@ -14,6 +14,8 @@
 8. 评论单曲(视频待后续改进)
 9. 用户提示(toast、loading)
 
+### 数据请求
+src/http/config   baseURL如(http://localhost:7890)
 
 ![首页](md-imgs/0.png)
 

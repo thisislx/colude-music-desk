@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const
-    baseURL = '/api',
+    baseURL = '',
     // 创建axios实例
     axiosInstance = axios.create({
         //自动前缀

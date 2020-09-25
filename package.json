@@ -6,9 +6,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --config build/webpack.dev.js",
-    "dev-build": "webpack --config build/webpack.dev.js",
-    "build": "webpack --config build/webpack.prod.js"
+    "dev": "webpack-dev-server --config config/webpack.dev.js",
+    "dev-build": "webpack --config config/webpack.dev.js",
+    "build": "webpack --config config/webpack.prod.js"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",

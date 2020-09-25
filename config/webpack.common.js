@@ -100,8 +100,8 @@ const config = {
             verbose: true,
         }),
         new HtmlPlugin({
-            template: './src/index.html',
-            favicon: './favicon.ico',
+            template: './public/index.html',
+            favicon: './public/favicon.ico',
         }),
         new SizePlugin(),
     ]

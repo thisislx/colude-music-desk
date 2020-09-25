@@ -16,7 +16,7 @@ const config = {
         chunkFilename: 'js/[name]_async_[contenthash].js',
     },
     mode: consts.PROD,
-    devtool: 'cheap-source-map',
+    devtool: 'source-map',
     module: {
         rules: [
             {

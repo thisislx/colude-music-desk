@@ -1,6 +1,7 @@
 import React, { memo, useMemo, useCallback, useState, useEffect } from 'react';
 import styles from './style'
 import PropTypes from 'prop-types'
+import { _backImgSize } from './config'
 
 function CD(props) {
     const
@@ -16,7 +17,7 @@ function CD(props) {
             className={`${styles.wrap} ${state ? '' : styles.paused}`}
         >
             <img
-                src={img}
+                src={`${img}${_backImgSize}`}
             />
         </div>
     )
